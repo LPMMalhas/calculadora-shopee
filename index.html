@@ -1,0 +1,1323 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Calculadora de Precificação e ROAS Estratégica</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/toastify-js/src/toastify.min.css">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f1f5f9; /* bg-slate-100 */
+        }
+        .tooltip { position: relative;
+            display: inline-block; }
+        .tooltip .tooltiptext {
+            visibility: hidden;
+            width: 250px; background-color: #334155; color: #fff;
+            text-align: left; border-radius: 6px; padding: 8px 12px; position: absolute;
+            z-index: 10; bottom: 125%;
+            left: 50%; margin-left: -125px; 
+            opacity: 0; transition: opacity 0.3s; font-size: 0.875rem; font-weight: 400;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+        }
+        .tooltip .tooltiptext::after {
+            content: "";
+            position: absolute; top: 100%; left: 50%; margin-left: -5px;
+            border-width: 5px; border-style: solid; border-color: #334155 transparent transparent transparent;
+        }
+        .tooltip:hover .tooltiptext { visibility: visible; opacity: 1;
+        }
+        .tooltip-icon { cursor: help;
+        }
+        .nav-tab { cursor: pointer; padding: 8px 16px; border-bottom: 2px solid transparent;
+        transition: all 0.3s; }
+        .nav-tab.active { border-bottom-color: #4ade80; color: #4ade80; font-weight: 600;
+        }
+        .card-scenario { transition: all 0.3s ease; transform-style: preserve-3d;
+        }
+        .card-scenario.updated { animation: flip 0.6s ease;
+        }
+        @keyframes flip {
+            0% { transform: rotateY(0deg);
+            }
+            50% { transform: rotateY(90deg);
+            }
+            100% { transform: rotateY(0deg);
+            }
+        }
+
+        /* ESTILOS DE IMPRESSÃO PROFISSIONAL (INJETADOS NA WINDOW.PRINT) */
+        @media print {
+            .no-print { display: none !important;
+            }
+        }
+    </style>
+</head>
+<body class="bg-slate-900 p-4 md:p-8">
+
+    <div class="fixed top-0 right-0 p-4 z-50 no-print">
+        <div id="user-auth-container" class="flex items-center gap-2 bg-slate-800 p-2 rounded-lg border border-slate-700">
+            <div id="user-info" class="hidden flex items-center gap-3">
+                <img id="user-photo" src="" alt="User" class="h-8 w-8 rounded-full border border-green-500">
+                <span 
+                id="user-name" class="text-sm font-medium text-white"></span>
+                <button id="logout-btn" class="text-slate-400 hover:text-red-400 transition-colors" title="Sair">
+                    <i class="fa-solid fa-right-from-bracket"></i>
+                </button>
+            </div>
+            <button id="login-btn" class="bg-green-500 text-white hover:bg-green-600 px-3 py-1 rounded-md text-sm font-semibold transition-all flex items-center gap-2">
+ 
+                <i class="fa-brands fa-google"></i> Entrar / Salvar
+            </button>
+        </div>
+    </div>
+    
+    <div class="max-w-7xl mx-auto" id="content-calc">
+        
+        <div class="bg-slate-800 shadow-2xl rounded-2xl overflow-hidden">
+            <div class="p-6 md:p-10">
+            
+                <h1 class="text-5xl font-extrabold text-white text-center mb-10">Calculadora de Precificação Estratégica</h1>
+
+                <div class="flex justify-center border-b border-slate-700 mb-8 no-print">
+                    <div id="tab-calc" class="nav-tab active">Calculadora</div>
+                    <div id="tab-costs" class="nav-tab text-slate-400">Custos Salvos</div>
+                </div>
+
+  
+                <div id="content-calc-main">
+                    <div id="inputs-container" class="space-y-6 bg-slate-900 p-6 md:p-8 rounded-xl border border-slate-700 mb-10 print-container print-inputs">
+                        <h2 class="text-4xl font-extrabold text-white text-center mb-6">Parâmetros de Entrada</h2>
+                        
+  
+                        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+                            <div>
+                                <h3 class="text-lg font-semibold text-green-400 mb-4 border-b-2 border-green-400/30 pb-2">1.
+                                Dados da Venda</h3>
+                                <div class="space-y-4">
+                                    <div>
+                             
+                                        <label for="sku" class="block text-sm font-medium text-slate-300 mb-1">
+                                            SKU do Produto
+                                        
+                                            <span class="tooltip-icon text-green-400 tooltip">
+                                                (?)
+                                               
+                                                <span class="tooltiptext">Identificador único do seu produto (ex: CAM-AZ-01).
+                                                Será usado para salvar e carregar custos.</span>
+                                            </span>
+                                        </label>
+           
+                                        <input type="text" id="sku" placeholder="SKU-PRODUTO-01" class="w-full p-3 border border-slate-600 bg-slate-700 text-white rounded-lg shadow-sm focus:ring-green-500 focus:border-green-500">
+                                    </div>
+                      
+                                    <div>
+                                        <label for="custoProduto" class="block text-sm font-medium text-slate-300 mb-1">
+                                        
+                                            Custo do Produto (R$)
+                                            <span class="tooltip-icon text-green-400 tooltip">
+                                               
+                                                (?)
+                                                <span class="tooltiptext">O seu custo total de aquisição ou produção da mercadoria que será vendida.</span>
+                                           
+                                            </span>
+                                        </label>
+                                        <input type="number" id="custoProduto" value="43.75" class="w-full p-3 border border-slate-600 bg-slate-700 text-white rounded-lg shadow-sm 
+                                        focus:ring-green-500 focus:border-green-500">
+                                    </div>
+                                    <div>
+                            
+                                        <label for="outrosCustos" class="block text-sm font-medium text-slate-300 mb-1">
+                                            Outros Custos (Embalagem, etc.) (R$)
+                                         
+                                            <span class="tooltip-icon text-green-400 tooltip">
+                                                (?)
+                                                   
+                                                <span class="tooltiptext">Soma de todos os outros custos variáveis por venda: embalagem, etiqueta, mão de obra de separação, brindes.</span>
+                                            </span>
+                             
+                                        </label>
+                                        <input type="number" id="outrosCustos" value="0.00" class="w-full p-3 border border-slate-600 bg-slate-700 text-white rounded-lg shadow-sm focus:ring-green-500 focus:border-green-500">
+                                       
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div>
+            
+                                <h3 class="text-lg font-semibold text-green-400 mb-4 border-b-2 border-green-400/30 pb-2">2.
+                                Taxas Fixas</h3>
+                                <div class="space-y-4">
+                                    <div>
+                              
+                                        <label for="comissaoPlataforma" class="block text-sm font-medium text-slate-300 mb-1">
+                                            Comissão da Plataforma (%)
+                                        
+                                            <span class="tooltip-icon text-green-400 tooltip">
+                                                (?)
+                                               
+                                                <span class="tooltiptext">Percentual de comissão cobrado pela plataforma (ex: 20% Shopee).
+                                                Calculado sobre o Preço Final pago pelo cliente.</span>
+                                            </span>
+                                        </label>
+         
+                                        <input type="number" id="comissaoPlataforma" value="20.00" disabled class="w-full p-3 border border-slate-700 rounded-lg shadow-sm bg-slate-800 text-slate-400">
+                                    </div>
+                      
+                                    <div>
+                                        <label for="taxaFixa" class="block text-sm font-medium text-slate-300 mb-1">
+                                        
+                                            Taxa Fixa por Venda (R$)
+                                            <span class="tooltip-icon text-green-400 tooltip">
+                                               
+                                                (?)
+                                                <span class="tooltiptext">Taxa fixa cobrada por venda (ex: R$ 4,00 Shopee).</span>
+                                            
+                                            </span>
+                                        </label>
+                                        <input type="number" id="taxaFixa" value="4.00" disabled class="w-full p-3 border border-slate-700 rounded-lg shadow-sm bg-slate-800 text-slate-400">
+   
+                                    </div>
+                                    <div>
+                               
+                                        <label for="impostos" class="block text-sm font-medium text-slate-300 mb-1">
+                                            Impostos sobre a Venda (%)
+                                        
+                                            <span class="tooltip-icon text-green-400 tooltip">
+                                                (?)
+                                               
+                                                <span class="tooltiptext">Percentual total de impostos (ex: Simples Nacional) sobre o Preço Final pago pelo cliente.</span>
+                                            </span>
+                                           
+                                        </label>
+                                        <input type="number" id="impostos" value="8.00" class="w-full p-3 border border-slate-600 bg-slate-700 text-white rounded-lg shadow-sm focus:ring-green-500 focus:border-green-500">
+                                    </div>
+        
+                                </div>
+                            </div>
+                            
+                    
+                            <div>
+                                <h3 class="text-lg font-semibold text-green-400 mb-4 border-b-2 border-green-400/30 pb-2">3.
+                                Descontos</h3>
+                                <div class="space-y-4">
+                                    <div>
+                                
+                                        <label for="ofertaRelampago" class="block text-sm font-medium text-slate-300 mb-1">
+                                            Oferta Relâmpago (%)
+                                        
+                                            <span class="tooltip-icon text-green-400 tooltip">
+                                                (?)
+                                               
+                                                <span class="tooltiptext">Desconto percentual de promoções (ex: 15%).
+                                                Será aplicado sobre o "Preço de Etiqueta".</span>
+                                            </span>
+                                        </label>
+           
+                                        <input type="number" id="ofertaRelampago" value="15.00" class="w-full p-3 border border-slate-600 bg-slate-700 text-white rounded-lg shadow-sm focus:ring-green-500 focus:border-green-500">
+                                    </div>
+                      
+                                    <div>
+                                        <label for="cupomLoja" class="block text-sm font-medium text-slate-300 mb-1">
+                                        
+                                            Cupom da Loja (%)
+                                            <span class="tooltip-icon text-green-400 tooltip">
+                                               
+                                                (?)
+                                                <span class="tooltiptext">Desconto percentual do cupom (ex: 2%).
+                                                Será aplicado sobre o preço JÁ COM o desconto da oferta.</span>
+                                            </span>
+                                        </label>
+       
+                                        <input type="number" id="cupomLoja" value="2.00" class="w-full p-3 border border-slate-600 bg-slate-700 text-white rounded-lg shadow-sm focus:ring-green-500 focus:border-green-500">
+                                    </div>
+                 
+                                </div>
+                            </div>
+
+                            <div>
+                             
+                                <h3 class="text-lg font-semibold text-green-400 mb-4 border-b-2 border-green-400/30 pb-2">4.
+                                Metas</h3>
+                                <div class="space-y-4">
+                                    <div>
+                                
+                                        <label for="metaLucro" class="block text-sm font-medium text-slate-300 mb-1">
+                                            Meta de Lucro Operacional
+                                           
+                                            <span class="tooltip-icon text-green-400 tooltip">
+                                                (?)
+                                            
+                                                <span class="tooltiptext">Defina sua meta de lucro ANTES de descontar o marketing (o "bolo").
+                                                Pode ser um % do preço final ou um valor fixo em R$.</span>
+                                            </span>
+                                        </label>
+    
+                                        <div class="relative">
+                                            <input type="number" id="metaLucro" value="15.00" class="w-full p-3 border border-slate-600 bg-slate-700 text-white rounded-lg shadow-sm focus:ring-green-500 focus:border-green-500 pr-20">
+     
+                                            <div class="absolute inset-y-0 right-0 flex items-center pr-2">
+                                                <button id="tipoMetaBtn" class="px-3 py-2 text-sm font-medium text-white 
+                                                bg-green-500 rounded-md hover:bg-green-600 focus:outline-none" data-tipo="percent">%</button>
+                                            </div>
+                                        </div>
+             
+                                    </div>
+                                    <div>
+                                        
+                                        <label for="percentualAds" class="block text-sm font-medium text-slate-300 mb-1">
+                                            % do Lucro Operacional p/ Ads
+                                            <span 
+                                            class="tooltip-icon text-green-400 tooltip">
+                                                (?)
+                                                <span class="tooltiptext">Qual 
+                                                fatia do seu "Lucro Operacional" você aceita reinvestir em marketing?
+                                                (ex: 50% = metade vai para Ads, metade vira Lucro Líquido).</span>
+                                            </span>
+                                        </label>
+       
+                                        <input type="number" id="percentualAds" value="50.00" class="w-full p-3 border border-slate-600 bg-slate-700 text-white rounded-lg shadow-sm focus:ring-green-500 focus:border-green-500">
+                                    </div>
+                 
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+             
+                    <div id="warning" class="hidden bg-yellow-100 border-l-4 border-yellow-500 text-yellow-700 p-4 rounded-md mb-8">
+                        </div>
+
+
+                    <div id="results-container" class="space-y-8">
+                        
+              
+                        <div class="text-center mb-6">
+                            <h2 class="text-4xl font-extrabold text-white text-center">Análise de Cenários de Lucro</h2>
+                            <p class="text-lg text-slate-300 mt-2">Veja o impacto de diferentes metas de lucro no seu preço e ROAS.</p>
+         
+                        </div>
+                        
+                        <div class="grid lg:grid-cols-3 gap-6">
+                            
+      
+                            <div class="card-scenario bg-slate-800 shadow-lg rounded-xl border-t-4 border-red-500 transform transition-transform lg:hover:scale-105 print-container print-results">
+                                <div class="p-6">
+                                  
+                                    <h4 id="cenarioConservadorTitulo" class="text-2xl font-bold text-red-400 mb-4 text-center">Conservador (-5 Pontos)</h4>
+                                   
+                                    <div class="text-center mb-4">
+                
+                                        <p class="text-sm font-medium text-slate-400">Preço Final Cliente</p>
+                                        <p id="precoFinalClienteConservador" class="text-4xl font-extrabold text-red-400 my-1">R$ 0,00</p>
+                          
+                                        <p class="text-sm text-slate-400">Preço Etiqueta: <span id="precoEtiquetaConservador" class="font-medium">R$ 0,00</span></p>
+                                    </div>
+                                    <hr class="border-slate-700 my-4">
+    
+                                    <div class="text-center mb-4">
+                                        <p class="text-sm font-medium text-slate-400">Meta de ROAS (p/ Shopee)</p>
+                    
+                                        <p id="roasMetaConservador" class="text-2xl font-bold text-slate-100 my-1">0.00</p>
+                                    </div>
+                                    <hr class="border-slate-700 
+                                    my-4">
+                                    <div class="text-center">
+                                        <p class="text-sm font-medium text-slate-400">Lucro Líquido p/ Venda</p>
+                 
+                                        <p id="lucroLiquidoConservador" class="text-2xl font-bold text-slate-100 my-1">R$ 0,00</p>
+                                    </div>
+
+                                    
+                                    <div class="mt-6">
+                                        <h5 class="text-base font-semibold text-slate-200 mb-3 border-b border-slate-700 pb-1">Detalhamento dos Descontos</h5>
+                                        <div id="detalheDescontoConservador" class="text-sm text-slate-300 space-y-2"></div>
+     
+                                    </div>
+                                    <div class="mt-6">
+                                
+                                        <h5 class="text-base font-semibold text-slate-200 mb-3 border-b border-slate-700 pb-1">Detalhamento dos Custos e Lucro</h5>
+                                        <div id="detalheCustoConservador" class="text-sm text-slate-300 space-y-2"></div>
+                                    </div>
+ 
+                                </div>
+                            </div>
+                            
+             
+                            <div class="card-scenario bg-slate-800 shadow-lg rounded-xl border-t-4 border-green-400 transform transition-transform lg:hover:scale-105 print-container print-results">
+                                <div class="p-6">
+                                    <h4 id="cenarioBaseTitulo" class="text-2xl font-bold text-green-400 
+                                    mb-4 text-center">Cenário Base (Meta)</h4>
+                                   
+                                    <div class="text-center mb-4">
+                        
+                                        <p class="text-sm font-medium text-slate-400">Preço Final Cliente</p>
+                                        <p id="precoFinalClienteBase" class="text-4xl font-extrabold text-green-400 my-1">R$ 0,00</p>
+                                
+                                        <p class="text-sm text-slate-400">Preço Etiqueta: <span id="precoEtiquetaBase" class="font-medium">R$ 0,00</span></p>
+                                    </div>
+                                    <hr class="border-slate-700 my-4">
+            
+                                    <div class="text-center mb-4">
+                                        <p class="text-sm font-medium text-slate-400">Meta de ROAS (p/ Shopee)</p>
+                          
+                                        <p id="roasMetaBase" class="text-2xl font-bold text-slate-100 my-1">0.00</p>
+                                    </div>
+                                    <hr class="border-slate-700 my-4">
+       
+                                    <div class="text-center">
+                                        <p class="text-sm font-medium text-slate-400">Lucro Líquido p/ Venda</p>
+                        
+                                        <p id="lucroLiquidoBase" class="text-2xl font-bold text-slate-100 my-1">R$ 0,00</p>
+                                    </div>
+
+                                    <div class="mt-6">
+     
+                                        <h5 class="text-base font-semibold text-slate-200 mb-3 border-b border-slate-700 pb-1">Detalhamento dos Descontos</h5>
+                                        <div id="detalheDescontoBase" class="text-sm text-slate-300 space-y-2"></div>
+            
+                                    </div>
+                                    <div class="mt-6">
+                                        
+                                        <h5 class="text-base font-semibold text-slate-200 mb-3 border-b border-slate-700 pb-1">Detalhamento dos Custos e Lucro</h5>
+                                        <div id="detalheCustoBase" class="text-sm text-slate-300 space-y-2"></div>
+                                    </div>
+        
+                                </div>
+                            </div>
+
+                            <div class="card-scenario bg-slate-800 shadow-lg rounded-xl border-t-4 border-blue-400 transform transition-transform lg:hover:scale-105 print-container print-results">
+         
+                                <div class="p-6">
+                                    <h4 id="cenarioOtimistaTitulo" class="text-2xl font-bold text-blue-400 mb-4 text-center">Otimista (+5 Pontos)</h4>
+                                
+     
+                                    <div class="text-center mb-4">
+                                        <p class="text-sm font-medium text-slate-400">Preço Final Cliente</p>
+             
+                                        <p id="precoFinalClienteOtimista" class="text-4xl font-extrabold text-blue-400 my-1">R$ 0,00</p>
+                                        <p class="text-sm text-slate-400">Preço Etiqueta: <span id="precoEtiquetaOtimista" class="font-medium">R$ 0,00</span></p>
+                    
+                                    </div>
+                                    <hr class="border-slate-700 my-4">
+                                    <div class="text-center mb-4">
+        
+                                        <p class="text-sm font-medium text-slate-400">Meta de ROAS (p/ Shopee)</p>
+                                        <p id="roasMetaOtimista" class="text-2xl font-bold text-slate-100 my-1">0.00</p>
+                
+                                    </div>
+                                    <hr class="border-slate-700 my-4">
+                                    <div class="text-center">
+     
+                                        <p class="text-sm font-medium text-slate-400">Lucro Líquido p/ Venda</p>
+                                        <p id="lucroLiquidoOtimista" class="text-2xl font-bold text-slate-100 my-1">R$ 0,00</p>
+             
+                                    </div>
+
+                                    <div class="mt-6">
+                                        
+                                        <h5 class="text-base font-semibold text-slate-200 mb-3 border-b border-slate-700 pb-1">Detalhamento dos Descontos</h5>
+                                        <div id="detalheDescontoOtimista" class="text-sm text-slate-300 space-y-2"></div>
+                                    </div>
+            
+                                    <div class="mt-6">
+                                        <h5 class="text-base font-semibold text-slate-200 mb-3 border-b border-slate-700 pb-1">Detalhamento dos Custos e Lucro</h5>
+                        
+                                        <div id="detalheCustoOtimista" class="text-sm text-slate-300 space-y-2"></div>
+                                    </div>
+                                </div>
+            
+                                </div>
+                            
+                        </div>
+                        <div class="mt-10 pt-6 border-t border-slate-700 flex justify-center 
+                        no-print">
+                             <button id="saveBtn" class="bg-green-500 text-white text-lg font-bold py-4 px-10 rounded-lg shadow-lg hover:bg-green-600 transition-colors flex items-center justify-center gap-3">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9V2h12v7M6 18H4a2 2 2 0 1-2-2v-5a2 2 0 0 1 
+                                2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"></path><path d="M6 14h12v8H6z"></path></svg>
+                                Salvar Relatório (PDF/Imprimir)
+                            </button>
+                        </div>
+
+ 
+                    </div> </div> <div id="content-costs" class="hidden p-6 md:p-10 no-print">
+                    <h2 class="text-4xl font-extrabold text-white text-center mb-8">Banco de Dados de Custos</h2>
+                    
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+ 
+                        <div class="bg-slate-900 p-6 rounded-xl border border-slate-700">
+                            <h3 class="text-lg font-semibold text-green-400 mb-4 border-b-2 border-green-400/30 pb-2">Salvar / Atualizar SKU</h3>
+                            <p class="text-sm text-slate-300 mb-4" id="save-info-text">Status: Offline 
+                            / Usando armazenamento local.</p>
+                            <button id="saveCostBtn" class="w-full bg-green-500 text-white font-bold py-3 px-4 rounded-lg hover:bg-green-600 transition-colors">
+                                Salvar / Atualizar Custo do SKU
+                      
+                            </button>
+                        </div>
+
+                        <div class="bg-slate-900 p-6 rounded-xl border border-slate-700">
+                            <h3 class="text-lg font-semibold text-green-400 mb-4 border-b-2 border-green-400/30 pb-2">SKUs Salvos</h3>
+     
+                            <div class="mb-4">
+                                <input type="text" id="searchSku" placeholder="Pesquisar SKU..." class="w-full p-3 border border-slate-600 bg-slate-700 text-white rounded-lg shadow-sm focus:ring-green-500 focus:border-green-500">
+                            </div>
+  
+                            <div id="savedCostsList" class="space-y-3 max-h-60 overflow-y-auto">
+                                </div>
+                        </div>
+              
+                    </div>
+
+                    <div class="mt-8 bg-slate-900 p-6 rounded-xl border border-slate-700">
+                        <h3 class="text-lg font-semibold text-green-400 mb-4 border-b-2 border-green-400/30 pb-2">Gestão de Dados (Backup Local/Importação)</h3>
+                        <p class="text-sm text-slate-300 mb-4">Faça o backup dos seus dados 
+                        para não os perder. Importe um backup anterior para restaurar.</p>
+                        <div class="flex gap-4">
+                            <button id="exportCostsBtn" class="flex-1 bg-blue-500 text-white font-bold py-3 px-4 rounded-lg shadow-lg hover:bg-blue-600 transition-colors">Exportar Dados (Backup)</button>
+                        
+                            <label class="flex-1 bg-yellow-500 text-white font-bold py-3 px-4 rounded-lg shadow-lg hover:bg-yellow-600 transition-colors cursor-pointer text-center">
+                                <span>Importar Dados</span>
+                                <input type="file" id="importCostsInput" accept=".json" class="hidden">
+                
+                            </label>
+                        </div>
+                    </div>
+
+                </div> </div>
+        </div>
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/toastify-js"></script>
+    <script type="module">
+    
+        // --- 1. CONFIGURAÇÃO FIREBASE (CHAVES FORNECIDAS) ---
+        // Versão atualizada do Firebase SDK V10+ (Module)
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
+        import { getAuth, signInWithPopup, GoogleAuthProvider, signOut, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
+        import { getFirestore, doc, setDoc, onSnapshot } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
+        // CONFIGURAÇÃO FORNECIDA PELO USUÁRIO (CHAVES)
+        const firebaseConfig = {
+            apiKey: "AIzaSyAZZrNzpAtOMUSm9wWM-Q-s-OEJJVgttUI",
+            authDomain: "shopee-pricing-v2.firebaseapp.com",
+            projectId: "shopee-pricing-v2",
+            storageBucket: "shopee-pricing-v2.firebasestorage.app",
+            messagingSenderId: "757776591106",
+            appId: "1:757776591106:web:4580a9b678488c543afa1b"
+      
+        };
+
+        let app, auth, db, user = null;
+        let isFirebaseReady = false;
+        let cloudSkus = [];
+        let localData = JSON.parse(localStorage.getItem('savedCostsDB_v4')) || [];
+
+        try {
+            app = initializeApp(firebaseConfig);
+            auth = getAuth(app);
+            db = getFirestore(app);
+            isFirebaseReady = true;
+            document.getElementById('save-info-text').textContent = "Status: Online. Entre para sincronizar.";
+        } catch (e) {
+            document.getElementById('save-info-text').textContent = "Status: Erro de Conexão. Usando modo local.";
+            console.error("Erro Firebase:", e);
+        }
+
+        // --- SELETORES DE ELEMENTOS ---
+        const inputs = document.querySelectorAll('input[type="number"], #sku');
+        const cards = document.querySelectorAll('.card-scenario');
+        // Abas
+        const tabCalc = document.getElementById('tab-calc');
+        const tabCosts = document.getElementById('tab-costs');
+        const contentCalcMain = document.getElementById('content-calc-main');
+        const contentCosts = document.getElementById('content-costs');
+        // Inputs
+        const skuInput = document.getElementById('sku');
+        const custoProdutoInput = document.getElementById('custoProduto');
+        const outrosCustosInput = document.getElementById('outrosCustos');
+        const comissaoPlataformaInput = document.getElementById('comissaoPlataforma');
+        const taxaFixaInput = document.getElementById('taxaFixa');
+        const impostosInput = document.getElementById('impostos');
+        const ofertaRelampagoInput = document.getElementById('ofertaRelampago');
+        const cupomLojaInput = document.getElementById('cupomLoja');
+        const metaLucroInput = document.getElementById('metaLucro');
+        const tipoMetaBtn = document.getElementById('tipoMetaBtn');
+        const percentualAdsInput = document.getElementById('percentualAds');
+        // Alerta
+        const warningEl = document.getElementById('warning');
+        // Botões
+        const saveBtn = document.getElementById('saveBtn');
+        // Cenários (Elementos de Resultado)
+        const cenarioConservadorTituloEl = document.getElementById('cenarioConservadorTitulo');
+        const precoFinalClienteConservadorEl = document.getElementById('precoFinalClienteConservador');
+        const precoEtiquetaConservadorEl = document.getElementById('precoEtiquetaConservador');
+        const roasMetaConservadorEl = document.getElementById('roasMetaConservador');
+        const lucroLiquidoConservadorEl = document.getElementById('lucroLiquidoConservador');
+        const detalheDescontoConservadorEl = document.getElementById('detalheDescontoConservador');
+        const detalheCustoConservadorEl = document.getElementById('detalheCustoConservador');
+        const cenarioBaseTituloEl = document.getElementById('cenarioBaseTitulo');
+        const precoFinalClienteBaseEl = document.getElementById('precoFinalClienteBase');
+        const precoEtiquetaBaseEl = document.getElementById('precoEtiquetaBase');
+        const roasMetaBaseEl = document.getElementById('roasMetaBase');
+        const lucroLiquidoBaseEl = document.getElementById('lucroLiquidoBase');
+        const detalheDescontoBaseEl = document.getElementById('detalheDescontoBase');
+        const detalheCustoBaseEl = document.getElementById('detalheCustoBase');
+        const cenarioOtimistaTituloEl = document.getElementById('cenarioOtimistaTitulo');
+        const precoFinalClienteOtimistaEl = document.getElementById('precoFinalClienteOtimista');
+        const precoEtiquetaOtimistaEl = document.getElementById('precoEtiquetaOtimista');
+        const roasMetaOtimistaEl = document.getElementById('roasMetaOtimista');
+        const lucroLiquidoOtimistaEl = document.getElementById('lucroLiquidoOtimista');
+        const detalheDescontoOtimistaEl = document.getElementById('detalheDescontoOtimista');
+        const detalheCustoOtimistaEl = document.getElementById('detalheCustoOtimista');
+        // Custos Salvos
+        const saveCostBtn = document.getElementById('saveCostBtn');
+        const savedCostsListEl = document.getElementById('savedCostsList');
+        const searchSkuInput = document.getElementById('searchSku');
+        const exportCostsBtn = document.getElementById('exportCostsBtn');
+        const importCostsInput = document.getElementById('importCostsInput');
+        // UI Auth
+        const loginBtn = document.getElementById('login-btn');
+        const logoutBtn = document.getElementById('logout-btn');
+        const userInfoDiv = document.getElementById('user-info');
+        const userNameEl = document.getElementById('user-name');
+        const userPhotoEl = document.getElementById('user-photo');
+        // --- FUNÇÕES UTILITÁRIAS ---
+        const formatCurrency = (value) => {
+            if (isNaN(value) || !isFinite(value)) return "R$ 0,00";
+            return value.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
+        }
+        const formatNumber = (value) => {
+             if (isNaN(value) || !isFinite(value)) return "0.00";
+            return value.toFixed(2).replace('.', ',');
+        }
+        const formatPercent = (value) => {
+            if (isNaN(value) || !isFinite(value)) return "0,00%";
+            return `${value.toFixed(2)}%`.replace('.', ',');
+        }
+        function showToast(msg, type="info") {
+            let bg = type === "error" ?
+            "#ef4444" : type === "success" ? "#10b981" : "#3b82f6";
+            Toastify({ text: msg, duration: 3000, gravity: "bottom", position: "right", style: { background: bg, borderRadius: "8px" } }).showToast();
+        }
+
+        // --- 2. LÓGICA DE CÁLCULO (MANTIDA IDÊNTICA AO SEU CÓDIGO CORRETO) ---
+        function calcularCenario(params, metaLucroOperacional, tipoMeta) {
+            const {
+                custoTotalProduto, // Soma de custoProduto + outrosCustos
+                custoProduto,
+                outrosCustos,
+ 
+                comissaoPercent,
+                taxaFixa,
+                impostosPercent,
+                ofertaRelampagoPercent,
+                cupomLojaPercent,
+                percentualAdsPercent
+     
+            } = params;
+            
+            let precoFinalCliente = 0;
+            let somaPercentuais = (comissaoPercent + impostosPercent) / 100;
+            let custosFixosTotais = custoTotalProduto + taxaFixa;
+            if (tipoMeta === 'percent') {
+                somaPercentuais += metaLucroOperacional / 100;
+                if (somaPercentuais >= 1) {
+                    return { error: "A soma de taxas e lucro operacional não pode exceder 100%."
+                };
+                }
+                precoFinalCliente = custosFixosTotais / (1 - somaPercentuais);
+            } else {
+                custosFixosTotais += metaLucroOperacional;
+                if (somaPercentuais >= 1) {
+                    return { error: "A soma de Comissão e Impostos não pode exceder 100%."
+                };
+                }
+                precoFinalCliente = custosFixosTotais / (1 - somaPercentuais);
+            }
+
+            // Achar Preço de Etiqueta Alvo
+            const precoAposCupom = precoFinalCliente / (1 - cupomLojaPercent / 100);
+            const precoAposOferta = precoAposCupom / (1 - ofertaRelampagoPercent / 100);
+            // Arredondamento para ,90
+            let precoFinal = Math.ceil(precoAposOferta * 10) / 10;
+            if (precoFinal % 1 < 0.90) {
+                precoFinal = Math.floor(precoFinal) + 0.90;
+            } else if (precoFinal % 1 > 0.90) {
+                 precoFinal = Math.floor(precoFinal) + 0.90;
+            }
+            
+            // Recalcular tudo com base no Preço de Etiqueta arredondado
+            const ofertaValor = precoFinal * (ofertaRelampagoPercent / 100);
+            const precoPosOferta = precoFinal - ofertaValor;
+            const cupomValorCascata = precoPosOferta * (cupomLojaPercent / 100);
+            const precoFinalClienteReal = precoPosOferta - cupomValorCascata;
+            const comissaoValor = precoFinalClienteReal * (comissaoPercent / 100);
+            const impostosValor = precoFinalClienteReal * (impostosPercent / 100);
+            // Recalcular o "Bolo" (Lucro Operacional Real)
+            const lucroOperacionalReal = precoFinalClienteReal - custoTotalProduto - taxaFixa - comissaoValor - impostosValor;
+            // Dividir o "Bolo"
+            const splitAdsP = percentualAdsPercent / 100;
+            const custoMarketingIdeal = lucroOperacionalReal * splitAdsP;
+            const lucroLiquidoIdeal = lucroOperacionalReal * (1 - splitAdsP);
+            // CORREÇÃO DO ROAS: Utilizar o Preço Final Cliente Real (Receita) no numerador.
+            // Calcular Meta de ROAS
+            const metaRoas = (custoMarketingIdeal > 0) ?
+            (precoFinalClienteReal / custoMarketingIdeal) : 0;
+
+            return {
+                error: null,
+                precoFinalCliente: precoFinalClienteReal,
+                precoEtiqueta: precoFinal,
+                metaRoas: metaRoas,
+                lucroLiquido: lucroLiquidoIdeal,
+         
+                lucroOperacional: lucroOperacionalReal,
+                custoMarketing: custoMarketingIdeal,
+                custoProduto: custoProduto,
+                outrosCustos: outrosCustos,
+                comissaoValor: comissaoValor,
+                taxaFixa: taxaFixa,
+       
+                impostosValor: impostosValor,
+                ofertaValor: ofertaValor,
+                cupomValorCascata: cupomValorCascata,
+                comissaoPercent: comissaoPercent,
+                impostosPercent: impostosPercent,
+                ofertaRelampagoPercent: ofertaRelampagoPercent,
+     
+                cupomLojaPercent: cupomLojaPercent,
+                percentualAdsPercent: percentualAdsPercent,
+            };
+        }
+        
+        function popularDetalhes(cenario, detalheDescontoEl, detalheCustoEl) {
+            // ... (lógica de preenchimento de detalhe - MANTIDA IDÊNTICA)
+            if (!cenario || cenario.error || !detalheDescontoEl || !detalheCustoEl) {
+                if (detalheDescontoEl) detalheDescontoEl.innerHTML = '<p class="text-red-500">Erro no cálculo.</p>';
+                if (detalheCustoEl) detalheCustoEl.innerHTML = '<p class="text-red-500">Erro no cálculo.</p>';
+                return;
+            }
+
+            const percentOfFinal = (value) => {
+                if (isNaN(value) || !isFinite(value) || cenario.precoFinalCliente <= 0) return "0.0";
+                return ((value / cenario.precoFinalCliente) * 100).toFixed(1);
+            };
+            
+            detalheDescontoEl.innerHTML = `
+                <p class="flex justify-between">
+                    <strong>Preço de Etiqueta:</strong>
+                    <span class="font-mono">${formatCurrency(cenario.precoEtiqueta)}</span>
+                </p>
+              
+                <p class="flex justify-between">
+                    <span>Oferta (${cenario.ofertaRelampagoPercent}%):</span>
+                    <span class="font-mono">-${formatCurrency(cenario.ofertaValor)}</span>
+                </p>
+                <p class="flex justify-between">
+                    
+                    <span>Cupom (${cenario.cupomLojaPercent}%):</span>
+                    <span class="font-mono">-${formatCurrency(cenario.cupomValorCascata)}</span>
+                </p>
+                <hr class="border-slate-700 my-2">
+                <p class="flex justify-between font-semibold">
+                    <strong>Preço Final Cliente:</strong>
+   
+                    <span class="font-mono">${formatCurrency(cenario.precoFinalCliente)}</span>
+                </p>
+            `;
+            detalheCustoEl.innerHTML = `
+                <p class="flex justify-between">
+                    <span>Comissão Plataforma (${cenario.comissaoPercent}%):</span>
+                    <span class="font-mono">-${formatCurrency(cenario.comissaoValor)} (${percentOfFinal(cenario.comissaoValor)}%)</span>
+                </p>
+                <p class="flex justify-between">
+  
+                    <span>Taxa Fixa:</span>
+                    <span class="font-mono">-${formatCurrency(cenario.taxaFixa)} (${percentOfFinal(cenario.taxaFixa)}%)</span>
+                </p>
+                <p class="flex justify-between">
+                    <span>Custo do Produto:</span>
+   
+                    <span class="font-mono">-${formatCurrency(cenario.custoProduto)} (${percentOfFinal(cenario.custoProduto)}%)</span>
+                </p>
+                <p class="flex justify-between">
+                    <span>Outros Custos:</span>
+                    <span class="font-mono">-${formatCurrency(cenario.outrosCustos)} (${percentOfFinal(cenario.outrosCustos)}%)</span>
+    
+                </p>
+                 <p class="flex justify-between">
+                    <span>Impostos (${cenario.impostosPercent}%):</span>
+                    <span class="font-mono">-${formatCurrency(cenario.impostosValor)} (${percentOfFinal(cenario.impostosValor)}%)</span>
+                </p>
+          
+                <hr class="border-slate-700 my-2">
+                <p class="flex justify-between font-semibold">
+                    <strong>Lucro Operacional Total:</strong>
+                    <span class="font-mono">${formatCurrency(cenario.lucroOperacional)} (${percentOfFinal(cenario.lucroOperacional)}%)</span>
+                </p>
+             
+                <hr class="border-slate-700 my-2">
+                <p class="flex justify-between text-xs">
+                    <span>&hookrightarrow;
+                    Custo de Marketing (${cenario.percentualAdsPercent}%):</span>
+                    <span class="font-mono">-${formatCurrency(cenario.custoMarketing)} (${percentOfFinal(cenario.custoMarketing)}%)</span>
+                </p>
+                <p class="flex justify-between font-semibold">
+                    <strong>= Lucro Líquido:</strong>
+                   
+                    <span class="font-mono">${formatCurrency(cenario.lucroLiquido)} (${percentOfFinal(cenario.lucroLiquido)}%)</span>
+                </p>
+            `;
+        }
+
+        function calcularTudo() {
+            // ... (lógica principal de cálculo - MANTIDA IDÊNTICA)
+            cards.forEach(card => card.classList.remove('updated'));
+            const custoProduto = parseFloat(custoProdutoInput.value) || 0;
+            const outrosCustos = parseFloat(outrosCustosInput.value) || 0;
+            const comissaoPercent = parseFloat(comissaoPlataformaInput.value) || 0;
+            const taxaFixa = parseFloat(taxaFixaInput.value) || 0;
+            const impostosPercent = parseFloat(impostosInput.value) || 0;
+            const ofertaRelampagoPercent = parseFloat(ofertaRelampagoInput.value) || 0;
+            const cupomLojaPercent = parseFloat(cupomLojaInput.value) || 0;
+            const metaLucro = parseFloat(metaLucroInput.value) || 0;
+            const tipoMeta = tipoMetaBtn.dataset.tipo;
+            const percentualAdsPercent = parseFloat(percentualAdsInput.value) || 0;
+
+            const custoTotalProduto = custoProduto + outrosCustos;
+            const params = {
+                custoTotalProduto: custoTotalProduto,
+                custoProduto: custoProduto,
+                outrosCustos: outrosCustos,
+                comissaoPercent: comissaoPercent,
+                taxaFixa: taxaFixa,
+            
+                impostosPercent: impostosPercent,
+                ofertaRelampagoPercent: ofertaRelampagoPercent,
+                cupomLojaPercent: cupomLojaPercent,
+                percentualAdsPercent: percentualAdsPercent
+            };
+            let metaBase = metaLucro;
+            let metaConservadora, metaOtimista;
+            let tituloBase, tituloConservador, tituloOtimista;
+            if (tipoMeta === 'percent') {
+                metaConservadora = metaBase - 5;
+                metaOtimista = metaBase + 5;
+                tituloBase = `(${metaBase.toFixed(1)}%)`;
+                tituloConservador = `(${metaConservadora.toFixed(1)}%)`;
+                tituloOtimista = `(${metaOtimista.toFixed(1)}%)`;
+            } else {
+                metaConservadora = metaBase * 0.95;
+                metaOtimista = metaBase * 1.05;
+                tituloBase = `(${formatCurrency(metaBase)})`;
+                tituloConservador = `(${formatCurrency(metaConservadora)})`;
+                tituloOtimista = `(${formatCurrency(metaOtimista)})`;
+            }
+
+            cenarioBaseTituloEl.textContent = `Cenário Base ${tituloBase}`;
+            cenarioConservadorTituloEl.textContent = `Conservador ${tituloConservador}`;
+            cenarioOtimistaTituloEl.textContent = `Otimista ${tituloOtimista}`;
+
+            const cenarioBase = calcularCenario(params, metaBase, tipoMeta);
+            const cenarioConservador = calcularCenario(params, metaConservadora, tipoMeta);
+            const cenarioOtimista = calcularCenario(params, metaOtimista, tipoMeta);
+            
+            if (cenarioBase.error || cenarioConservador.error || cenarioOtimista.error) {
+                warningEl.textContent = cenarioBase.error ||
+                cenarioConservador.error || cenarioOtimista.error;
+                warningEl.classList.remove('hidden');
+                // Limpar resultados em caso de erro
+                [
+                    precoFinalClienteConservadorEl, precoEtiquetaConservadorEl, roasMetaConservadorEl, lucroLiquidoConservadorEl,
+                    precoFinalClienteBaseEl, precoEtiquetaBaseEl, roasMetaBaseEl, lucroLiquidoBaseEl,
+                    precoFinalClienteOtimistaEl, precoEtiquetaOtimistaEl, roasMetaOtimistaEl, lucroLiquidoOtimistaEl
+     
+                ].forEach(el => { if (el) el.textContent = 'R$ 0,00'; });
+                popularDetalhes(null, detalheDescontoConservadorEl, detalheCustoConservadorEl);
+                popularDetalhes(null, detalheDescontoBaseEl, detalheCustoBaseEl);
+                popularDetalhes(null, detalheDescontoOtimistaEl, detalheCustoOtimistaEl);
+                return;
+            } else {
+                warningEl.classList.add('hidden');
+            }
+
+            precoFinalClienteConservadorEl.textContent = formatCurrency(cenarioConservador.precoFinalCliente);
+            precoEtiquetaConservadorEl.textContent = formatCurrency(cenarioConservador.precoEtiqueta);
+            roasMetaConservadorEl.textContent = formatNumber(cenarioConservador.metaRoas);
+            lucroLiquidoConservadorEl.textContent = formatCurrency(cenarioConservador.lucroLiquido);
+            
+            precoFinalClienteBaseEl.textContent = formatCurrency(cenarioBase.precoFinalCliente);
+            precoEtiquetaBaseEl.textContent = formatCurrency(cenarioBase.precoEtiqueta);
+            roasMetaBaseEl.textContent = formatNumber(cenarioBase.metaRoas);
+            lucroLiquidoBaseEl.textContent = formatCurrency(cenarioBase.lucroLiquido);
+            precoFinalClienteOtimistaEl.textContent = formatCurrency(cenarioOtimista.precoFinalCliente);
+            precoEtiquetaOtimistaEl.textContent = formatCurrency(cenarioOtimista.precoEtiqueta);
+            roasMetaOtimistaEl.textContent = formatNumber(cenarioOtimista.metaRoas);
+            lucroLiquidoOtimistaEl.textContent = formatCurrency(cenarioOtimista.lucroLiquido);
+
+            popularDetalhes(cenarioConservador, detalheDescontoConservadorEl, detalheCustoConservadorEl);
+            popularDetalhes(cenarioBase, detalheDescontoBaseEl, detalheCustoBaseEl);
+            popularDetalhes(cenarioOtimista, detalheDescontoOtimistaEl, detalheCustoOtimistaEl);
+            
+            setTimeout(() => {
+                cards.forEach(card => card.classList.add('updated'));
+            }, 50);
+        }
+
+        // --- 3. FUNÇÃO PARA SALVAR RELATÓRIO (MANTIDA IDÊNTICA AO SEU CÓDIGO CORRETO) ---
+        function handleSave() {
+            const sku = skuInput.value.trim().toUpperCase() ||
+            'Relatório de Precificação';
+            const dataAtual = new Date().toLocaleDateString('pt-BR');
+            
+            const custoProduto = formatCurrency(parseFloat(custoProdutoInput.value) || 0);
+            const outrosCustos = formatCurrency(parseFloat(outrosCustosInput.value) || 0);
+            const comissao = formatNumber(parseFloat(comissaoPlataformaInput.value) || 0) + '%';
+            const taxaFixa = formatCurrency(parseFloat(taxaFixaInput.value) || 0);
+            const impostos = formatNumber(parseFloat(impostosInput.value) || 0) + '%';
+            const oferta = formatNumber(parseFloat(ofertaRelampagoInput.value) || 0) + '%';
+            const cupom = formatNumber(parseFloat(cupomLojaInput.value) || 0) + '%';
+            const metaLucroVal = formatNumber(parseFloat(metaLucroInput.value) || 0);
+            const tipoMeta = tipoMetaBtn.dataset.tipo;
+            const metaLucro = (tipoMeta === 'percent') ? `${metaLucroVal}%` : formatCurrency(parseFloat(metaLucroInput.value) || 0);
+            const percentAds = formatNumber(parseFloat(percentualAdsInput.value) || 0) + '%';
+            const inputsHtml = `
+                <div class="report-section print-inputs">
+                    <h3 class="report-subtitle">Parâmetros de Entrada</h3>
+                    <div class="grid grid-cols-4 gap-4 text-sm">
+                        <div class="p-2 border-r border-gray-300">
+     
+                            <h4 class="font-bold mb-1 text-green-700">1.
+                            Dados da Venda</h4>
+                            <p><strong>SKU:</strong> ${skuInput.value.trim().toUpperCase() ||
+                            'N/A'}</p>
+                            <p><strong>Custo Produto:</strong> ${custoProduto}</p>
+                            <p><strong>Outros Custos:</strong> ${outrosCustos}</p>
+                        </div>
+                
+                        <div class="p-2 border-r border-gray-300">
+                            <h4 class="font-bold mb-1 text-green-700">2.
+                            Taxas Fixas</h4>
+                            <p><strong>Comissão:</strong> ${comissao}</p>
+                            <p><strong>Taxa Fixa:</strong> ${taxaFixa}</p>
+                            <p><strong>Impostos:</strong> ${impostos}</p>
+            
+                        </div>
+                        <div class="p-2 border-r border-gray-300">
+                            <h4 class="font-bold mb-1 text-green-700">3.
+                            Descontos</h4>
+                            <p><strong>Oferta Rel.:</strong> ${oferta}</p>
+                            <p><strong>Cupom Loja:</strong> ${cupom}</p>
+                        </div>
+                
+                        <div class="p-2">
+                            <h4 class="font-bold mb-1 text-green-700">4.
+                            Metas</h4>
+                            <p><strong>Meta Lucro Op.:</strong> ${metaLucro}</p>
+                            <p><strong>% p/ Ads:</strong> ${percentAds}</p>
+                        </div>
+              
+                    </div>
+                </div>
+            `;
+            const resultsNode = document.querySelector('.lg\\:grid-cols-3.gap-6');
+            if (!resultsNode) return;
+            const resultsClone = resultsNode.cloneNode(true);
+            resultsClone.querySelectorAll('.transform, .lg\\:hover\\:scale-105').forEach(el => el.classList.remove('transform', 'lg:hover:scale-105'));
+            const resultsHtml = resultsClone.innerHTML;
+            const printWindow = window.open('', '', 'height=800,width=1200');
+            printWindow.document.write(`
+                <html>
+                <head>
+                    <title>${sku}</title>
+                    <script src="https://cdn.tailwindcss.com"><\/script>
+                    <style>
+ 
+                        body { 
+                            font-family: "Inter", sans-serif; 
+                            background-color: #ffffff;
+                
+                            color: #1e293b;
+                            padding: 20px;
+                        } 
+                        @page {
+       
+                            size: A4; 
+                            margin: 1cm;
+                        }
+                        
+                        h1 { 
+                            font-size: 20pt; 
+                            font-weight: 800; 
+                            color: #047857;
+         
+                            border-bottom: 3px solid #10b981; 
+                            padding-bottom: 5px; 
+                            margin-bottom: 20px; 
+                 
+                            text-align: center;
+                        }
+                        h2 { font-size: 16pt;
+                            margin-top: 20px; margin-bottom: 10px; color: #1e293b; font-weight: 700; }
+                        h3 { font-size: 14pt;
+                            margin-top: 15px; color: #1e293b; font-weight: 600; }
+                        h4 { font-size: 12pt;
+                            font-weight: 700; }
+                        p, span, strong { font-size: 9pt;
+                            color: #475569; }
+                        strong { color: #000;
+                            font-weight: 700; }
+                        hr { border-color: #cbd5e1;
+                            margin: 10px 0; }
+                        .card-scenario { 
+                            border: 1px solid #e2e8f0 !important;
+                            border-radius: 8px;
+                            page-break-inside: avoid;
+                            box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+                            background-color: #ffffff !important;
+                        }
+                        .lg\\:grid-cols-3 { 
+                            display: grid !important;
+                            grid-template-columns: repeat(3, 1fr) !important;
+                            gap: 20px !important; 
+                        }
+                        .text-4xl { font-size: 18pt !important;
+                            font-weight: 900 !important; }
+                        .text-2xl { font-size: 14pt !important;
+                            font-weight: 700 !important; }
+                        .text-sm { font-size: 8pt !important;
+                        }
+                        
+                        .report-section { border-bottom: 1px solid #cbd5e1;
+                            padding-bottom: 15px; margin-bottom: 15px; }
+                        .report-title { color: #0f172a;
+                            font-size: 18pt; font-weight: 800; }
+                    </style>
+                </head>
+                <body>
+                
+                <h1 class="report-title">Relatório Estratégico de Precificação</h1>
+
+        
+                        <div class="flex justify-between text-sm mb-4">
+                     <p><strong>SKU:</strong> ${sku ||
+                            'Não Informado'}</p>
+                     <p><strong>Data de Emissão:</strong> ${dataAtual}</p>
+                </div>
+                ${inputsHtml}
+                <div class="report-section">
+                    <h2 class="text-xl font-bold text-center">Análise de Cenários 
+                        de Lucro</h2>
+                </div>
+                <div class="grid lg:grid-cols-3 gap-6">
+                    ${resultsHtml}
+                </div>
+
+                </body></html>
+            
+            `);
+            printWindow.document.close();
+            
+            setTimeout(() => { 
+                printWindow.focus(); 
+                printWindow.print(); 
+                printWindow.close(); 
+            }, 1000);
+        }
+        // --- 4. LÓGICA DE FIREBASE E SINCRONIZAÇÃO DE DADOS ---
+
+        function getActiveCosts() {
+            return user ?
+            cloudSkus : localData;
+        }
+
+        async function saveCostsToDB(newCosts) {
+            if (user) {
+                const userRef = doc(db, "users", user.uid);
+                await setDoc(userRef, { savedCosts: newCosts }, { merge: true });
+            } else {
+                localStorage.setItem('savedCostsDB_v4', JSON.stringify(newCosts));
+                localData = newCosts;
+            }
+        }
+
+        function renderSavedCosts() {
+            const currentCosts = getActiveCosts();
+            const filter = searchSkuInput.value.toUpperCase();
+            savedCostsListEl.innerHTML = '';
+            
+            if (currentCosts.length === 0) {
+                savedCostsListEl.innerHTML = '<p class="text-slate-400 text-sm">Nenhum custo salvo ainda.</p>';
+                return;
+            }
+
+            const filtered = currentCosts.filter(item => item.sku.toUpperCase().includes(filter));
+            if (filtered.length === 0) {
+                 savedCostsListEl.innerHTML = '<p class="text-slate-400 text-sm">Nenhum SKU encontrado.</p>';
+                return;
+            }
+
+            filtered.sort((a, b) => a.sku.localeCompare(b.sku)).forEach(item => {
+                const el = document.createElement('div');
+                el.className = 'flex justify-between items-center p-3 bg-slate-800 rounded-lg border border-slate-700 shadow-sm';
+                el.innerHTML = `
+                    
+                    <div>
+                        <strong class="text-slate-100">${item.sku}</strong>
+                        <p class="text-sm text-slate-300">Custo: ${formatCurrency(item.custoProduto)} | Outros: ${formatCurrency(item.outrosCustos)}</p>
+                    </div>
+     
+                    <div class="flex gap-2">
+  
+                        <button data-sku="${item.sku}" class="load-cost-btn bg-green-500 text-white text-xs font-bold px-3 py-1 rounded-md hover:bg-green-600">Carregar</button>
+                        <button data-sku="${item.sku}" class="delete-cost-btn bg-red-500 text-white text-xs font-bold px-3 py-1 rounded-md hover:bg-red-600">&times;</button>
+             
+                    </div>
+              
+                `;
+                savedCostsListEl.appendChild(el);
+            });
+        }
+        
+        function handleCostActions(e) {
+            if (e.target.classList.contains('load-cost-btn')) {
+                const sku = e.target.dataset.sku;
+                const item = getActiveCosts().find(i => i.sku === sku);
+                if (item) {
+                    skuInput.value = item.sku;
+                    custoProdutoInput.value = item.custoProduto;
+                    outrosCustosInput.value = item.outrosCustos;
+                    tabCalc.click();
+                    calcularTudo();
+                }
+            }
+            if (e.target.classList.contains('delete-cost-btn')) {
+                const sku = e.target.dataset.sku;
+                if (confirm(`Tem certeza que deseja excluir o SKU "${sku}"?`)) {
+                    let currentCosts = getActiveCosts();
+                    currentCosts = currentCosts.filter(i => i.sku !== sku);
+                    saveCostsToDB(currentCosts); // Salva de volta ao DB/Local
+                    renderSavedCosts();
+                    showToast(`SKU "${sku}" excluído.`, "info");
+                }
+            }
+        }
+
+        function setupCostSaving() {
+            if (saveCostBtn) {
+                saveCostBtn.addEventListener('click', async () => {
+                    const sku = skuInput.value.trim().toUpperCase();
+         
+                    if (!sku) {
+                        alert("Por favor, preencha o campo SKU do Produto.");
+                        return;
+                    }
+ 
+              
+                    const custoProduto = parseFloat(custoProdutoInput.value) || 0;
+                    const outrosCustos = parseFloat(outrosCustosInput.value) || 0;
+                    const currentCosts = getActiveCosts();
+
+              
+                    const newCost = { sku, custoProduto, outrosCustos };
+                    const updatedCosts = currentCosts.filter(item => item.sku !== sku);
+                    updatedCosts.push(newCost);
+
+                    await saveCostsToDB(updatedCosts);
+                    
+                    showToast(`Custos para o SKU "${sku}" salvos/atualizados!`, "success");
+                    if (!contentCosts.classList.contains('hidden')) renderSavedCosts();
+                });
+            }
+
+            if (savedCostsListEl) {
+                savedCostsListEl.addEventListener('click', handleCostActions);
+            }
+            if(searchSkuInput) {
+                searchSkuInput.addEventListener('input', renderSavedCosts);
+            }
+
+            // Exportar
+            if (exportCostsBtn) {
+                exportCostsBtn.addEventListener('click', () => {
+                    const costsToExport = getActiveCosts();
+                    if (costsToExport.length === 0) {
+       
+                        showToast("Não há dados para exportar.", "info");
+                        return;
+                    }
+                    const dataStr = JSON.stringify(costsToExport, null, 2);
+         
+                    const dataUri = 'data:application/json;charset=utf-8,'+ encodeURIComponent(dataStr);
+                    const exportFileDefaultName = (user ? `backup_cloud_${user.uid.substring(0, 5)}` : 'backup_custos_local') + '.json';
+                    
+                    const linkElement = document.createElement('a');
+            
+                    linkElement.setAttribute('href', dataUri);
+                    linkElement.setAttribute('download', exportFileDefaultName);
+                    linkElement.click();
+                });
+            }
+
+            // Importar
+            if (importCostsInput) {
+                importCostsInput.addEventListener('change', (event) => {
+                    const file = event.target.files[0];
+                    if (!file) return;
+         
+ 
+                    const reader = new FileReader();
+                    reader.onload = async (e) => {
+                        try {
+                          
+                            const importedData = JSON.parse(e.target.result);
+                            if (Array.isArray(importedData) && importedData.every(i => i.sku && i.custoProduto !== undefined && i.outrosCustos !== undefined)) {
+                                const destination = user ? "na Nuvem" : "localmente";
+             
+                                if (confirm(`Isso irá substituir ${getActiveCosts().length} SKUs existentes por ${importedData.length} SKUs do ficheiro ${destination}. Deseja continuar?`)) {
+                                    await saveCostsToDB(importedData);
+                             
+                                    renderSavedCosts();
+                                    showToast("Dados importados com sucesso!", "success");
+                                }
+                            } else {
+                                showToast("Erro: O ficheiro não parece ser um backup válido.", "error");
+                            }
+                        } catch (err) {
+                            showToast("Erro ao ler o ficheiro: " + err.message, "error");
+                        }
+                        importCostsInput.value = "";
+                    };
+                    reader.readAsText(file);
+                });
+            }
+        }
+        
+        // --- 5. LÓGICA DE AUTENTICAÇÃO E INSCRIÇÃO ---
+
+        if (isFirebaseReady) {
+            loginBtn.onclick = async () => {
+                const provider = new GoogleAuthProvider();
+                try {
+                    await signInWithPopup(auth, provider);
+                } catch (error) {
+                    showToast(`Erro no login: ${error.code || 'Desconhecido'}`, "error");
+                }
+            };
+            logoutBtn.onclick = () => {
+                signOut(auth);
+                showToast("Sessão encerrada. Usando modo local.", "info");
+                user = null;
+                updateAuthUI();
+                renderSavedCosts();
+            };
+            function updateAuthUI() {
+                if (user) {
+                    loginBtn.classList.add('hidden');
+                    userInfoDiv.classList.remove('hidden');
+                    userNameEl.textContent = user.displayName.split(' ')[0];
+                    userPhotoEl.src = user.photoURL || 'data:image/svg+xml,...';
+                } else {
+                    loginBtn.classList.remove('hidden');
+                    userInfoDiv.classList.add('hidden');
+                }
+            }
+
+            function subscribeToUserData() {
+                if (!user) return;
+                const userRef = doc(db, "users", user.uid);
+                // Escuta em tempo real (onSnapshot)
+                onSnapshot(userRef, (docSnap) => {
+                    if (docSnap.exists() && docSnap.data().savedCosts) {
+                        cloudSkus = docSnap.data().savedCosts;
+                    
+                        // Se o localData tiver itens e a nuvem estiver vazia, transfere
+                        if (cloudSkus.length === 0 && localData.length > 0) {
+                            cloudSkus = [...localData];
+                        
+                            saveCostsToDB(cloudSkus); // Sobe os dados locais para a nuvem
+                            localData = []; // Limpa o local após a subida
+                            showToast("Dados locais transferidos para a nuvem.", "success");
+                
+                        }
+                    } else {
+                        cloudSkus = localData; // Se não houver dados, usa o local
+                    }
+                
+                    renderSavedCosts();
+                }, (error) => {
+                    console.error("Erro ao sincronizar Firestore:", error);
+                    showToast("Erro ao sincronizar dados da nuvem.", "error");
+                });
+            }
+
+            onAuthStateChanged(auth, (currentUser) => {
+                user = currentUser;
+                updateAuthUI();
+                if (user) {
+                    subscribeToUserData();
+     
+                    document.getElementById('save-info-text').textContent = `Status: Logado como ${user.displayName.split(' ')[0]}. Dados na Nuvem.`;
+                    showToast("Login com sucesso. Dados sincronizados.", "success");
+                } else {
+                    renderSavedCosts();
+             
+                    document.getElementById('save-info-text').textContent = "Status: Offline / Usando armazenamento local.";
+                }
+            });
+        }
+        
+        // --- 6. INICIALIZAÇÃO ---
+        function setupTabs() {
+            tabCalc.addEventListener('click', () => {
+                tabCalc.classList.add('active');
+                tabCosts.classList.remove('active');
+                contentCalcMain.classList.remove('hidden');
+       
+                contentCosts.classList.add('hidden');
+            });
+            tabCosts.addEventListener('click', () => {
+                tabCosts.classList.add('active');
+                tabCalc.classList.remove('active');
+                contentCosts.classList.remove('hidden');
+                contentCalcMain.classList.add('hidden');
+                renderSavedCosts();
+            });
+        }
+
+        document.addEventListener('DOMContentLoaded', () => {
+            inputs.forEach(input => input.addEventListener('input', calcularTudo));
+            percentualAdsInput.addEventListener('input', calcularTudo);
+
+            tipoMetaBtn.addEventListener('click', () => {
+                if (tipoMetaBtn.dataset.tipo === 'percent') {
+                    tipoMetaBtn.dataset.tipo = 'valor';
+    
+                    tipoMetaBtn.textContent = 'R$';
+                } else {
+                    tipoMetaBtn.dataset.tipo = 'percent';
+                    tipoMetaBtn.textContent = '%';
+                }
+    
+                calcularTudo();
+            });
+
+            if (saveBtn) {
+                saveBtn.addEventListener('click', handleSave);
+            }
+            
+            skuInput.addEventListener('input', (e) => {
+      
+                let valor = e.target.value;
+                valor = valor.toUpperCase().replace(/\s+/g, '_');
+                e.target.value = valor;
+            });
+            setupTabs();
+            setupCostSaving();
+            calcularTudo();
+        });
+    </script>
+</body>
+</html>
