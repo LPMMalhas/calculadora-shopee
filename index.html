@@ -62,15 +62,16 @@
     <div class="fixed top-0 right-0 p-4 z-50 no-print">
         <div id="user-auth-container" class="flex items-center gap-2 bg-slate-800 p-2 rounded-lg border border-slate-700">
             <div id="user-info" class="hidden flex items-center gap-3">
-                <img id="user-photo" src="" alt="User" class="h-8 w-8 rounded-full border border-green-500">
-                <span 
-                id="user-name" class="text-sm font-medium text-white"></span>
-                <button id="logout-btn" class="text-slate-400 hover:text-red-400 transition-colors" title="Sair">
+                <img id="user-photo" src="" alt="User" class="h-8 w-8 rounded-full border border-green-500 hidden">
+                <div id="user-icon-fallback" class="h-8 w-8 rounded-full border border-green-500 bg-slate-600 flex items-center justify-center text-white">
+                    <i class="fa-solid fa-user"></i>
+                </div>
+                <span id="user-name" class="text-sm font-medium text-white"></span>
+                <button id="logout-btn" class="text-slate-400 hover:text-red-400 transition-colors ml-2" title="Sair">
                     <i class="fa-solid fa-right-from-bracket"></i>
                 </button>
             </div>
             <button id="login-btn" class="bg-green-500 text-white hover:bg-green-600 px-3 py-1 rounded-md text-sm font-semibold transition-all flex items-center gap-2">
- 
                 <i class="fa-brands fa-google"></i> Entrar / Salvar
             </button>
         </div>
@@ -101,48 +102,47 @@
                                 <div class="space-y-4">
                                     <div>
                              
-                                        <label for="sku" class="block text-sm font-medium text-slate-300 mb-1">
-                                            SKU do Produto
-                                        
-                                            <span class="tooltip-icon text-green-400 tooltip">
-                                                (?)
-                                               
-                                                <span class="tooltiptext">Identificador único do seu produto (ex: CAM-AZ-01).
-                                                Será usado para salvar e carregar custos.</span>
-                                            </span>
-                                        </label>
-           
-                                        <input type="text" id="sku" placeholder="SKU-PRODUTO-01" class="w-full p-3 border border-slate-600 bg-slate-700 text-white rounded-lg shadow-sm focus:ring-green-500 focus:border-green-500">
+                                            <label for="sku" class="block text-sm font-medium text-slate-300 mb-1">
+                                                SKU do Produto
+                                             
+                                                <span class="tooltip-icon text-green-400 tooltip">
+                                                    (?)
+                                                    
+                                                    <span class="tooltiptext">Identificador único do seu produto (ex: CAM-AZ-01).
+                                                    Será usado para salvar e carregar custos.</span>
+                                                </span>
+                                            </label>
+            
+                                            <input type="text" id="sku" placeholder="SKU-PRODUTO-01" class="w-full p-3 border border-slate-600 bg-slate-700 text-white rounded-lg shadow-sm focus:ring-green-500 focus:border-green-500">
                                     </div>
                       
                                     <div>
-                                        <label for="custoProduto" class="block text-sm font-medium text-slate-300 mb-1">
-                                        
-                                            Custo do Produto (R$)
-                                            <span class="tooltip-icon text-green-400 tooltip">
-                                               
-                                                (?)
-                                                <span class="tooltiptext">O seu custo total de aquisição ou produção da mercadoria que será vendida.</span>
-                                           
-                                            </span>
-                                        </label>
-                                        <input type="number" id="custoProduto" value="43.75" class="w-full p-3 border border-slate-600 bg-slate-700 text-white rounded-lg shadow-sm 
-                                        focus:ring-green-500 focus:border-green-500">
+                                            <label for="custoProduto" class="block text-sm font-medium text-slate-300 mb-1">
+                                             
+                                                Custo do Produto (R$)
+                                                <span class="tooltip-icon text-green-400 tooltip">
+                                                    
+                                                    (?)
+                                                    <span class="tooltiptext">O seu custo total de aquisição ou produção da mercadoria que será vendida.</span>
+                                                
+                                                </span>
+                                            </label>
+                                            <input type="number" id="custoProduto" value="43.75" class="w-full p-3 border border-slate-600 bg-slate-700 text-white rounded-lg shadow-sm focus:ring-green-500 focus:border-green-500">
                                     </div>
                                     <div>
-                            
-                                        <label for="outrosCustos" class="block text-sm font-medium text-slate-300 mb-1">
-                                            Outros Custos (Embalagem, etc.) (R$)
-                                         
-                                            <span class="tooltip-icon text-green-400 tooltip">
-                                                (?)
-                                                   
-                                                <span class="tooltiptext">Soma de todos os outros custos variáveis por venda: embalagem, etiqueta, mão de obra de separação, brindes.</span>
-                                            </span>
+                                   
+                                            <label for="outrosCustos" class="block text-sm font-medium text-slate-300 mb-1">
+                                                Outros Custos (Embalagem, etc.) (R$)
+                                              
+                                                <span class="tooltip-icon text-green-400 tooltip">
+                                                    (?)
+                                                        
+                                                    <span class="tooltiptext">Soma de todos os outros custos variáveis por venda: embalagem, etiqueta, mão de obra de separação, brindes.</span>
+                                                </span>
                              
-                                        </label>
-                                        <input type="number" id="outrosCustos" value="0.00" class="w-full p-3 border border-slate-600 bg-slate-700 text-white rounded-lg shadow-sm focus:ring-green-500 focus:border-green-500">
-                                       
+                                            </label>
+                                            <input type="number" id="outrosCustos" value="0.00" class="w-full p-3 border border-slate-600 bg-slate-700 text-white rounded-lg shadow-sm focus:ring-green-500 focus:border-green-500">
+                                            
                                     </div>
                                 </div>
                             </div>
@@ -153,48 +153,48 @@
                                 Taxas Fixas</h3>
                                 <div class="space-y-4">
                                     <div>
-                              
-                                        <label for="comissaoPlataforma" class="block text-sm font-medium text-slate-300 mb-1">
-                                            Comissão da Plataforma (%)
-                                        
-                                            <span class="tooltip-icon text-green-400 tooltip">
-                                                (?)
-                                               
-                                                <span class="tooltiptext">Percentual de comissão cobrado pela plataforma (ex: 20% Shopee).
-                                                Calculado sobre o Preço Final pago pelo cliente.</span>
-                                            </span>
-                                        </label>
+                             
+                                            <label for="comissaoPlataforma" class="block text-sm font-medium text-slate-300 mb-1">
+                                                Comissão da Plataforma (%)
+                                             
+                                                <span class="tooltip-icon text-green-400 tooltip">
+                                                    (?)
+                                                    
+                                                    <span class="tooltiptext">Percentual de comissão cobrado pela plataforma (ex: 20% Shopee).
+                                                    Calculado sobre o Preço Final pago pelo cliente.</span>
+                                                </span>
+                                            </label>
          
-                                        <input type="number" id="comissaoPlataforma" value="20.00" disabled class="w-full p-3 border border-slate-700 rounded-lg shadow-sm bg-slate-800 text-slate-400">
+                                            <input type="number" id="comissaoPlataforma" value="20.00" disabled class="w-full p-3 border border-slate-700 rounded-lg shadow-sm bg-slate-800 text-slate-400">
                                     </div>
                       
                                     <div>
-                                        <label for="taxaFixa" class="block text-sm font-medium text-slate-300 mb-1">
-                                        
-                                            Taxa Fixa por Venda (R$)
-                                            <span class="tooltip-icon text-green-400 tooltip">
-                                               
-                                                (?)
-                                                <span class="tooltiptext">Taxa fixa cobrada por venda (ex: R$ 4,00 Shopee).</span>
-                                            
-                                            </span>
-                                        </label>
-                                        <input type="number" id="taxaFixa" value="4.00" disabled class="w-full p-3 border border-slate-700 rounded-lg shadow-sm bg-slate-800 text-slate-400">
+                                            <label for="taxaFixa" class="block text-sm font-medium text-slate-300 mb-1">
+                                             
+                                                Taxa Fixa por Venda (R$)
+                                                <span class="tooltip-icon text-green-400 tooltip">
+                                                    
+                                                    (?)
+                                                    <span class="tooltiptext">Taxa fixa cobrada por venda (ex: R$ 4,00 Shopee).</span>
+                                                 
+                                                </span>
+                                            </label>
+                                            <input type="number" id="taxaFixa" value="4.00" disabled class="w-full p-3 border border-slate-700 rounded-lg shadow-sm bg-slate-800 text-slate-400">
    
                                     </div>
                                     <div>
                                
-                                        <label for="impostos" class="block text-sm font-medium text-slate-300 mb-1">
-                                            Impostos sobre a Venda (%)
-                                        
-                                            <span class="tooltip-icon text-green-400 tooltip">
-                                                (?)
-                                               
-                                                <span class="tooltiptext">Percentual total de impostos (ex: Simples Nacional) sobre o Preço Final pago pelo cliente.</span>
-                                            </span>
-                                           
-                                        </label>
-                                        <input type="number" id="impostos" value="8.00" class="w-full p-3 border border-slate-600 bg-slate-700 text-white rounded-lg shadow-sm focus:ring-green-500 focus:border-green-500">
+                                            <label for="impostos" class="block text-sm font-medium text-slate-300 mb-1">
+                                                Impostos sobre a Venda (%)
+                                             
+                                                <span class="tooltip-icon text-green-400 tooltip">
+                                                    (?)
+                                                    
+                                                    <span class="tooltiptext">Percentual total de impostos (ex: Simples Nacional) sobre o Preço Final pago pelo cliente.</span>
+                                                </span>
+                                                
+                                            </label>
+                                            <input type="number" id="impostos" value="8.00" class="w-full p-3 border border-slate-600 bg-slate-700 text-white rounded-lg shadow-sm focus:ring-green-500 focus:border-green-500">
                                     </div>
         
                                 </div>
@@ -207,33 +207,33 @@
                                 <div class="space-y-4">
                                     <div>
                                 
-                                        <label for="ofertaRelampago" class="block text-sm font-medium text-slate-300 mb-1">
-                                            Oferta Relâmpago (%)
-                                        
-                                            <span class="tooltip-icon text-green-400 tooltip">
-                                                (?)
-                                               
-                                                <span class="tooltiptext">Desconto percentual de promoções (ex: 15%).
-                                                Será aplicado sobre o "Preço de Etiqueta".</span>
-                                            </span>
-                                        </label>
-           
-                                        <input type="number" id="ofertaRelampago" value="15.00" class="w-full p-3 border border-slate-600 bg-slate-700 text-white rounded-lg shadow-sm focus:ring-green-500 focus:border-green-500">
+                                            <label for="ofertaRelampago" class="block text-sm font-medium text-slate-300 mb-1">
+                                                Oferta Relâmpago (%)
+                                             
+                                                <span class="tooltip-icon text-green-400 tooltip">
+                                                    (?)
+                                                    
+                                                    <span class="tooltiptext">Desconto percentual de promoções (ex: 15%).
+                                                    Será aplicado sobre o "Preço de Etiqueta".</span>
+                                                </span>
+                                            </label>
+            
+                                            <input type="number" id="ofertaRelampago" value="15.00" class="w-full p-3 border border-slate-600 bg-slate-700 text-white rounded-lg shadow-sm focus:ring-green-500 focus:border-green-500">
                                     </div>
                       
                                     <div>
-                                        <label for="cupomLoja" class="block text-sm font-medium text-slate-300 mb-1">
-                                        
-                                            Cupom da Loja (%)
-                                            <span class="tooltip-icon text-green-400 tooltip">
-                                               
-                                                (?)
-                                                <span class="tooltiptext">Desconto percentual do cupom (ex: 2%).
-                                                Será aplicado sobre o preço JÁ COM o desconto da oferta.</span>
-                                            </span>
-                                        </label>
+                                            <label for="cupomLoja" class="block text-sm font-medium text-slate-300 mb-1">
+                                             
+                                                Cupom da Loja (%)
+                                                <span class="tooltip-icon text-green-400 tooltip">
+                                                    
+                                                    (?)
+                                                    <span class="tooltiptext">Desconto percentual do cupom (ex: 2%).
+                                                    Será aplicado sobre o preço JÁ COM o desconto da oferta.</span>
+                                                </span>
+                                            </label>
        
-                                        <input type="number" id="cupomLoja" value="2.00" class="w-full p-3 border border-slate-600 bg-slate-700 text-white rounded-lg shadow-sm focus:ring-green-500 focus:border-green-500">
+                                            <input type="number" id="cupomLoja" value="2.00" class="w-full p-3 border border-slate-600 bg-slate-700 text-white rounded-lg shadow-sm focus:ring-green-500 focus:border-green-500">
                                     </div>
                  
                                 </div>
@@ -246,41 +246,41 @@
                                 <div class="space-y-4">
                                     <div>
                                 
-                                        <label for="metaLucro" class="block text-sm font-medium text-slate-300 mb-1">
-                                            Meta de Lucro Operacional
-                                           
-                                            <span class="tooltip-icon text-green-400 tooltip">
-                                                (?)
-                                            
-                                                <span class="tooltiptext">Defina sua meta de lucro ANTES de descontar o marketing (o "bolo").
-                                                Pode ser um % do preço final ou um valor fixo em R$.</span>
-                                            </span>
-                                        </label>
+                                            <label for="metaLucro" class="block text-sm font-medium text-slate-300 mb-1">
+                                                Meta de Lucro Operacional
+                                                
+                                                <span class="tooltip-icon text-green-400 tooltip">
+                                                    (?)
+                                                     
+                                                    <span class="tooltiptext">Defina sua meta de lucro ANTES de descontar o marketing (o "bolo").
+                                                    Pode ser um % do preço final ou um valor fixo em R$.</span>
+                                                </span>
+                                            </label>
     
-                                        <div class="relative">
-                                            <input type="number" id="metaLucro" value="15.00" class="w-full p-3 border border-slate-600 bg-slate-700 text-white rounded-lg shadow-sm focus:ring-green-500 focus:border-green-500 pr-20">
+                                            <div class="relative">
+                                                <input type="number" id="metaLucro" value="15.00" class="w-full p-3 border border-slate-600 bg-slate-700 text-white rounded-lg shadow-sm focus:ring-green-500 focus:border-green-500 pr-20">
      
-                                            <div class="absolute inset-y-0 right-0 flex items-center pr-2">
-                                                <button id="tipoMetaBtn" class="px-3 py-2 text-sm font-medium text-white 
-                                                bg-green-500 rounded-md hover:bg-green-600 focus:outline-none" data-tipo="percent">%</button>
+                                                <div class="absolute inset-y-0 right-0 flex items-center pr-2">
+                                                    <button id="tipoMetaBtn" class="px-3 py-2 text-sm font-medium text-white 
+                                                    bg-green-500 rounded-md hover:bg-green-600 focus:outline-none" data-tipo="percent">%</button>
+                                                </div>
                                             </div>
-                                        </div>
              
                                     </div>
                                     <div>
-                                        
-                                        <label for="percentualAds" class="block text-sm font-medium text-slate-300 mb-1">
-                                            % do Lucro Operacional p/ Ads
-                                            <span 
-                                            class="tooltip-icon text-green-400 tooltip">
-                                                (?)
-                                                <span class="tooltiptext">Qual 
-                                                fatia do seu "Lucro Operacional" você aceita reinvestir em marketing?
-                                                (ex: 50% = metade vai para Ads, metade vira Lucro Líquido).</span>
-                                            </span>
-                                        </label>
+                                            
+                                            <label for="percentualAds" class="block text-sm font-medium text-slate-300 mb-1">
+                                                % do Lucro Operacional p/ Ads
+                                                <span 
+                                                class="tooltip-icon text-green-400 tooltip">
+                                                    (?)
+                                                    <span class="tooltiptext">Qual 
+                                                    fatia do seu "Lucro Operacional" você aceita reinvestir em marketing?
+                                                    (ex: 50% = metade vai para Ads, metade vira Lucro Líquido).</span>
+                                                </span>
+                                            </label>
        
-                                        <input type="number" id="percentualAds" value="50.00" class="w-full p-3 border border-slate-600 bg-slate-700 text-white rounded-lg shadow-sm focus:ring-green-500 focus:border-green-500">
+                                            <input type="number" id="percentualAds" value="50.00" class="w-full p-3 border border-slate-600 bg-slate-700 text-white rounded-lg shadow-sm focus:ring-green-500 focus:border-green-500">
                                     </div>
                  
                                 </div>
@@ -309,39 +309,57 @@
                                 <div class="p-6">
                                   
                                     <h4 id="cenarioConservadorTitulo" class="text-2xl font-bold text-red-400 mb-4 text-center">Conservador (-5 Pontos)</h4>
-                                   
+                                    
                                     <div class="text-center mb-4">
                 
-                                        <p class="text-sm font-medium text-slate-400">Preço Final Cliente</p>
-                                        <p id="precoFinalClienteConservador" class="text-4xl font-extrabold text-red-400 my-1">R$ 0,00</p>
-                          
-                                        <p class="text-sm text-slate-400">Preço Etiqueta: <span id="precoEtiquetaConservador" class="font-medium">R$ 0,00</span></p>
+                                            <p class="text-sm font-medium text-slate-400">Preço Final Cliente</p>
+                                            <p id="precoFinalClienteConservador" class="text-4xl font-extrabold text-red-400 my-1">R$ 0,00</p>
+                                   
+                                            <p class="text-sm text-slate-400">Preço Etiqueta: <span id="precoEtiquetaConservador" class="font-medium">R$ 0,00</span></p>
                                     </div>
                                     <hr class="border-slate-700 my-4">
     
                                     <div class="text-center mb-4">
-                                        <p class="text-sm font-medium text-slate-400">Meta de ROAS (p/ Shopee)</p>
-                    
-                                        <p id="roasMetaConservador" class="text-2xl font-bold text-slate-100 my-1">0.00</p>
+                                            <p class="text-sm font-medium text-slate-400">Meta de ROAS (p/ Shopee)</p>
+                                            <p id="roasMetaConservador" class="text-2xl font-bold text-slate-100 my-1">0.00</p>
+                                            
+                                            <!-- ROAS Minimo -->
+                                            <div class="mt-2 bg-slate-900/50 rounded-lg p-2 border border-orange-500/30">
+                                                <p class="text-xs font-semibold text-orange-400 uppercase tracking-wider flex items-center justify-center gap-1">
+                                                    ROAS Mínimo (Break-even)
+                                                    <span class="tooltip-icon tooltip cursor-help">
+                                                        (?)
+                                                        <span class="tooltiptext normal-case tracking-normal font-normal text-white bg-slate-800 border border-slate-600 shadow-xl w-64 p-3 z-50">
+                                                            <strong class="block text-orange-400 mb-1">Ponto de Equilíbrio</strong>
+                                                            Indica o ROAS limite onde 100% do seu Lucro Operacional é consumido pelos anúncios.
+                                                            <br><br>
+                                                            Abaixo deste valor = <span class="text-red-400">Prejuízo</span>.
+                                                            <br>
+                                                            Acima deste valor = <span class="text-green-400">Lucro</span>.
+                                                        </span>
+                                                    </span>
+                                                </p>
+                                                <p id="roasMinimoConservador" class="text-xl font-bold text-orange-400">0.00</p>
+                                            </div>
                                     </div>
                                     <hr class="border-slate-700 
                                     my-4">
                                     <div class="text-center">
-                                        <p class="text-sm font-medium text-slate-400">Lucro Líquido p/ Venda</p>
+                                            <p class="text-sm font-medium text-slate-400">Lucro Líquido p/ Venda</p>
                  
-                                        <p id="lucroLiquidoConservador" class="text-2xl font-bold text-slate-100 my-1">R$ 0,00</p>
+                                            <p id="lucroLiquidoConservador" class="text-2xl font-bold text-slate-100 my-1">R$ 0,00</p>
                                     </div>
 
                                     
                                     <div class="mt-6">
-                                        <h5 class="text-base font-semibold text-slate-200 mb-3 border-b border-slate-700 pb-1">Detalhamento dos Descontos</h5>
-                                        <div id="detalheDescontoConservador" class="text-sm text-slate-300 space-y-2"></div>
+                                            <h5 class="text-base font-semibold text-slate-200 mb-3 border-b border-slate-700 pb-1">Detalhamento dos Descontos</h5>
+                                            <div id="detalheDescontoConservador" class="text-sm text-slate-300 space-y-2"></div>
      
                                     </div>
                                     <div class="mt-6">
                                 
-                                        <h5 class="text-base font-semibold text-slate-200 mb-3 border-b border-slate-700 pb-1">Detalhamento dos Custos e Lucro</h5>
-                                        <div id="detalheCustoConservador" class="text-sm text-slate-300 space-y-2"></div>
+                                            <h5 class="text-base font-semibold text-slate-200 mb-3 border-b border-slate-700 pb-1">Detalhamento dos Custos e Lucro</h5>
+                                            <div id="detalheCustoConservador" class="text-sm text-slate-300 space-y-2"></div>
                                     </div>
  
                                 </div>
@@ -352,39 +370,57 @@
                                 <div class="p-6">
                                     <h4 id="cenarioBaseTitulo" class="text-2xl font-bold text-green-400 
                                     mb-4 text-center">Cenário Base (Meta)</h4>
-                                   
+                                    
                                     <div class="text-center mb-4">
                         
-                                        <p class="text-sm font-medium text-slate-400">Preço Final Cliente</p>
-                                        <p id="precoFinalClienteBase" class="text-4xl font-extrabold text-green-400 my-1">R$ 0,00</p>
+                                            <p class="text-sm font-medium text-slate-400">Preço Final Cliente</p>
+                                            <p id="precoFinalClienteBase" class="text-4xl font-extrabold text-green-400 my-1">R$ 0,00</p>
                                 
-                                        <p class="text-sm text-slate-400">Preço Etiqueta: <span id="precoEtiquetaBase" class="font-medium">R$ 0,00</span></p>
+                                            <p class="text-sm text-slate-400">Preço Etiqueta: <span id="precoEtiquetaBase" class="font-medium">R$ 0,00</span></p>
                                     </div>
                                     <hr class="border-slate-700 my-4">
             
                                     <div class="text-center mb-4">
-                                        <p class="text-sm font-medium text-slate-400">Meta de ROAS (p/ Shopee)</p>
-                          
-                                        <p id="roasMetaBase" class="text-2xl font-bold text-slate-100 my-1">0.00</p>
+                                            <p class="text-sm font-medium text-slate-400">Meta de ROAS (p/ Shopee)</p>
+                                            <p id="roasMetaBase" class="text-2xl font-bold text-slate-100 my-1">0.00</p>
+                                            
+                                            <!-- ROAS Minimo -->
+                                            <div class="mt-2 bg-slate-900/50 rounded-lg p-2 border border-orange-500/30">
+                                                <p class="text-xs font-semibold text-orange-400 uppercase tracking-wider flex items-center justify-center gap-1">
+                                                    ROAS Mínimo (Break-even)
+                                                    <span class="tooltip-icon tooltip cursor-help">
+                                                        (?)
+                                                        <span class="tooltiptext normal-case tracking-normal font-normal text-white bg-slate-800 border border-slate-600 shadow-xl w-64 p-3 z-50">
+                                                            <strong class="block text-orange-400 mb-1">Ponto de Equilíbrio</strong>
+                                                            Indica o ROAS limite onde 100% do seu Lucro Operacional é consumido pelos anúncios.
+                                                            <br><br>
+                                                            Abaixo deste valor = <span class="text-red-400">Prejuízo</span>.
+                                                            <br>
+                                                            Acima deste valor = <span class="text-green-400">Lucro</span>.
+                                                        </span>
+                                                    </span>
+                                                </p>
+                                                <p id="roasMinimoBase" class="text-xl font-bold text-orange-400">0.00</p>
+                                            </div>
                                     </div>
                                     <hr class="border-slate-700 my-4">
        
                                     <div class="text-center">
-                                        <p class="text-sm font-medium text-slate-400">Lucro Líquido p/ Venda</p>
+                                            <p class="text-sm font-medium text-slate-400">Lucro Líquido p/ Venda</p>
                         
-                                        <p id="lucroLiquidoBase" class="text-2xl font-bold text-slate-100 my-1">R$ 0,00</p>
+                                            <p id="lucroLiquidoBase" class="text-2xl font-bold text-slate-100 my-1">R$ 0,00</p>
                                     </div>
 
                                     <div class="mt-6">
      
-                                        <h5 class="text-base font-semibold text-slate-200 mb-3 border-b border-slate-700 pb-1">Detalhamento dos Descontos</h5>
-                                        <div id="detalheDescontoBase" class="text-sm text-slate-300 space-y-2"></div>
+                                            <h5 class="text-base font-semibold text-slate-200 mb-3 border-b border-slate-700 pb-1">Detalhamento dos Descontos</h5>
+                                            <div id="detalheDescontoBase" class="text-sm text-slate-300 space-y-2"></div>
             
                                     </div>
                                     <div class="mt-6">
-                                        
-                                        <h5 class="text-base font-semibold text-slate-200 mb-3 border-b border-slate-700 pb-1">Detalhamento dos Custos e Lucro</h5>
-                                        <div id="detalheCustoBase" class="text-sm text-slate-300 space-y-2"></div>
+                                            
+                                            <h5 class="text-base font-semibold text-slate-200 mb-3 border-b border-slate-700 pb-1">Detalhamento dos Custos e Lucro</h5>
+                                            <div id="detalheCustoBase" class="text-sm text-slate-300 space-y-2"></div>
                                     </div>
         
                                 </div>
@@ -397,37 +433,56 @@
                                 
      
                                     <div class="text-center mb-4">
-                                        <p class="text-sm font-medium text-slate-400">Preço Final Cliente</p>
+                                            <p class="text-sm font-medium text-slate-400">Preço Final Cliente</p>
              
-                                        <p id="precoFinalClienteOtimista" class="text-4xl font-extrabold text-blue-400 my-1">R$ 0,00</p>
-                                        <p class="text-sm text-slate-400">Preço Etiqueta: <span id="precoEtiquetaOtimista" class="font-medium">R$ 0,00</span></p>
+                                            <p id="precoFinalClienteOtimista" class="text-4xl font-extrabold text-blue-400 my-1">R$ 0,00</p>
+                                            <p class="text-sm text-slate-400">Preço Etiqueta: <span id="precoEtiquetaOtimista" class="font-medium">R$ 0,00</span></p>
                     
                                     </div>
                                     <hr class="border-slate-700 my-4">
                                     <div class="text-center mb-4">
         
-                                        <p class="text-sm font-medium text-slate-400">Meta de ROAS (p/ Shopee)</p>
-                                        <p id="roasMetaOtimista" class="text-2xl font-bold text-slate-100 my-1">0.00</p>
+                                            <p class="text-sm font-medium text-slate-400">Meta de ROAS (p/ Shopee)</p>
+                                            <p id="roasMetaOtimista" class="text-2xl font-bold text-slate-100 my-1">0.00</p>
+                                            
+                                            <!-- ROAS Minimo -->
+                                            <div class="mt-2 bg-slate-900/50 rounded-lg p-2 border border-orange-500/30">
+                                                <p class="text-xs font-semibold text-orange-400 uppercase tracking-wider flex items-center justify-center gap-1">
+                                                    ROAS Mínimo (Break-even)
+                                                    <span class="tooltip-icon tooltip cursor-help">
+                                                        (?)
+                                                        <span class="tooltiptext normal-case tracking-normal font-normal text-white bg-slate-800 border border-slate-600 shadow-xl w-64 p-3 z-50">
+                                                            <strong class="block text-orange-400 mb-1">Ponto de Equilíbrio</strong>
+                                                            Indica o ROAS limite onde 100% do seu Lucro Operacional é consumido pelos anúncios.
+                                                            <br><br>
+                                                            Abaixo deste valor = <span class="text-red-400">Prejuízo</span>.
+                                                            <br>
+                                                            Acima deste valor = <span class="text-green-400">Lucro</span>.
+                                                        </span>
+                                                    </span>
+                                                </p>
+                                                <p id="roasMinimoOtimista" class="text-xl font-bold text-orange-400">0.00</p>
+                                            </div>
                 
                                     </div>
                                     <hr class="border-slate-700 my-4">
                                     <div class="text-center">
      
-                                        <p class="text-sm font-medium text-slate-400">Lucro Líquido p/ Venda</p>
-                                        <p id="lucroLiquidoOtimista" class="text-2xl font-bold text-slate-100 my-1">R$ 0,00</p>
+                                            <p class="text-sm font-medium text-slate-400">Lucro Líquido p/ Venda</p>
+                                            <p id="lucroLiquidoOtimista" class="text-2xl font-bold text-slate-100 my-1">R$ 0,00</p>
              
                                     </div>
 
                                     <div class="mt-6">
-                                        
-                                        <h5 class="text-base font-semibold text-slate-200 mb-3 border-b border-slate-700 pb-1">Detalhamento dos Descontos</h5>
-                                        <div id="detalheDescontoOtimista" class="text-sm text-slate-300 space-y-2"></div>
+                                            
+                                            <h5 class="text-base font-semibold text-slate-200 mb-3 border-b border-slate-700 pb-1">Detalhamento dos Descontos</h5>
+                                            <div id="detalheDescontoOtimista" class="text-sm text-slate-300 space-y-2"></div>
                                     </div>
             
                                     <div class="mt-6">
-                                        <h5 class="text-base font-semibold text-slate-200 mb-3 border-b border-slate-700 pb-1">Detalhamento dos Custos e Lucro</h5>
+                                            <h5 class="text-base font-semibold text-slate-200 mb-3 border-b border-slate-700 pb-1">Detalhamento dos Custos e Lucro</h5>
                         
-                                        <div id="detalheCustoOtimista" class="text-sm text-slate-300 space-y-2"></div>
+                                            <div id="detalheCustoOtimista" class="text-sm text-slate-300 space-y-2"></div>
                                     </div>
                                 </div>
             
@@ -451,8 +506,7 @@
  
                         <div class="bg-slate-900 p-6 rounded-xl border border-slate-700">
                             <h3 class="text-lg font-semibold text-green-400 mb-4 border-b-2 border-green-400/30 pb-2">Salvar / Atualizar SKU</h3>
-                            <p class="text-sm text-slate-300 mb-4" id="save-info-text">Status: Offline 
-                            / Usando armazenamento local.</p>
+                            <p class="text-sm text-slate-300 mb-4" id="save-info-text">Status: Carregando...</p>
                             <button id="saveCostBtn" class="w-full bg-green-500 text-white font-bold py-3 px-4 rounded-lg hover:bg-green-600 transition-colors">
                                 Salvar / Atualizar Custo do SKU
                       
@@ -492,13 +546,12 @@
     </div>
     <script src="https://cdn.jsdelivr.net/npm/toastify-js"></script>
     <script type="module">
-    
-        // --- 1. CONFIGURAÇÃO FIREBASE (CHAVES FORNECIDAS) ---
-        // Versão atualizada do Firebase SDK V10+ (Module)
-        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
-        import { getAuth, signInWithPopup, GoogleAuthProvider, signOut, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
-        import { getFirestore, doc, setDoc, onSnapshot } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
-        // CONFIGURAÇÃO FORNECIDA PELO USUÁRIO (CHAVES)
+        // --- 1. CONFIGURAÇÃO FIREBASE (PRODUÇÃO) ---
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
+        import { getAuth, signInWithPopup, GoogleAuthProvider, signOut, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
+        import { getFirestore, doc, setDoc, onSnapshot } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
+
+        // CHAVES DO SEU PROJETO ORIGINAL
         const firebaseConfig = {
             apiKey: "AIzaSyAZZrNzpAtOMUSm9wWM-Q-s-OEJJVgttUI",
             authDomain: "shopee-pricing-v2.firebaseapp.com",
@@ -506,7 +559,6 @@
             storageBucket: "shopee-pricing-v2.firebasestorage.app",
             messagingSenderId: "757776591106",
             appId: "1:757776591106:web:4580a9b678488c543afa1b"
-      
         };
 
         let app, auth, db, user = null;
@@ -554,23 +606,29 @@
         const precoFinalClienteConservadorEl = document.getElementById('precoFinalClienteConservador');
         const precoEtiquetaConservadorEl = document.getElementById('precoEtiquetaConservador');
         const roasMetaConservadorEl = document.getElementById('roasMetaConservador');
+        const roasMinimoConservadorEl = document.getElementById('roasMinimoConservador');
         const lucroLiquidoConservadorEl = document.getElementById('lucroLiquidoConservador');
         const detalheDescontoConservadorEl = document.getElementById('detalheDescontoConservador');
         const detalheCustoConservadorEl = document.getElementById('detalheCustoConservador');
+
         const cenarioBaseTituloEl = document.getElementById('cenarioBaseTitulo');
         const precoFinalClienteBaseEl = document.getElementById('precoFinalClienteBase');
         const precoEtiquetaBaseEl = document.getElementById('precoEtiquetaBase');
         const roasMetaBaseEl = document.getElementById('roasMetaBase');
+        const roasMinimoBaseEl = document.getElementById('roasMinimoBase');
         const lucroLiquidoBaseEl = document.getElementById('lucroLiquidoBase');
         const detalheDescontoBaseEl = document.getElementById('detalheDescontoBase');
         const detalheCustoBaseEl = document.getElementById('detalheCustoBase');
+
         const cenarioOtimistaTituloEl = document.getElementById('cenarioOtimistaTitulo');
         const precoFinalClienteOtimistaEl = document.getElementById('precoFinalClienteOtimista');
         const precoEtiquetaOtimistaEl = document.getElementById('precoEtiquetaOtimista');
         const roasMetaOtimistaEl = document.getElementById('roasMetaOtimista');
+        const roasMinimoOtimistaEl = document.getElementById('roasMinimoOtimista');
         const lucroLiquidoOtimistaEl = document.getElementById('lucroLiquidoOtimista');
         const detalheDescontoOtimistaEl = document.getElementById('detalheDescontoOtimista');
         const detalheCustoOtimistaEl = document.getElementById('detalheCustoOtimista');
+        
         // Custos Salvos
         const saveCostBtn = document.getElementById('saveCostBtn');
         const savedCostsListEl = document.getElementById('savedCostsList');
@@ -583,6 +641,8 @@
         const userInfoDiv = document.getElementById('user-info');
         const userNameEl = document.getElementById('user-name');
         const userPhotoEl = document.getElementById('user-photo');
+        const userIconFallback = document.getElementById('user-icon-fallback');
+
         // --- FUNÇÕES UTILITÁRIAS ---
         const formatCurrency = (value) => {
             if (isNaN(value) || !isFinite(value)) return "R$ 0,00";
@@ -602,7 +662,7 @@
             Toastify({ text: msg, duration: 3000, gravity: "bottom", position: "right", style: { background: bg, borderRadius: "8px" } }).showToast();
         }
 
-        // --- 2. LÓGICA DE CÁLCULO (MANTIDA IDÊNTICA AO SEU CÓDIGO CORRETO) ---
+        // --- LÓGICA DE CÁLCULO ---
         function calcularCenario(params, metaLucroOperacional, tipoMeta) {
             const {
                 custoTotalProduto, // Soma de custoProduto + outrosCustos
@@ -665,12 +725,19 @@
             // Calcular Meta de ROAS
             const metaRoas = (custoMarketingIdeal > 0) ?
             (precoFinalClienteReal / custoMarketingIdeal) : 0;
+            
+            // CALCULAR ROAS MÍNIMO (Break-even)
+            // Utilizando 100% do Lucro Operacional como custo de marketing
+            const custoMarketingMax = lucroOperacionalReal; 
+            const roasMinimo = (custoMarketingMax > 0) ? 
+            (precoFinalClienteReal / custoMarketingMax) : 0;
 
             return {
                 error: null,
                 precoFinalCliente: precoFinalClienteReal,
                 precoEtiqueta: precoFinal,
                 metaRoas: metaRoas,
+                roasMinimo: roasMinimo, // NEW
                 lucroLiquido: lucroLiquidoIdeal,
          
                 lucroOperacional: lucroOperacionalReal,
@@ -679,7 +746,7 @@
                 outrosCustos: outrosCustos,
                 comissaoValor: comissaoValor,
                 taxaFixa: taxaFixa,
-       
+        
                 impostosValor: impostosValor,
                 ofertaValor: ofertaValor,
                 cupomValorCascata: cupomValorCascata,
@@ -693,7 +760,6 @@
         }
         
         function popularDetalhes(cenario, detalheDescontoEl, detalheCustoEl) {
-            // ... (lógica de preenchimento de detalhe - MANTIDA IDÊNTICA)
             if (!cenario || cenario.error || !detalheDescontoEl || !detalheCustoEl) {
                 if (detalheDescontoEl) detalheDescontoEl.innerHTML = '<p class="text-red-500">Erro no cálculo.</p>';
                 if (detalheCustoEl) detalheCustoEl.innerHTML = '<p class="text-red-500">Erro no cálculo.</p>';
@@ -766,14 +832,13 @@
                 </p>
                 <p class="flex justify-between font-semibold">
                     <strong>= Lucro Líquido:</strong>
-                   
+                    
                     <span class="font-mono">${formatCurrency(cenario.lucroLiquido)} (${percentOfFinal(cenario.lucroLiquido)}%)</span>
                 </p>
             `;
         }
 
         function calcularTudo() {
-            // ... (lógica principal de cálculo - MANTIDA IDÊNTICA)
             cards.forEach(card => card.classList.remove('updated'));
             const custoProduto = parseFloat(custoProdutoInput.value) || 0;
             const outrosCustos = parseFloat(outrosCustosInput.value) || 0;
@@ -830,9 +895,9 @@
                 warningEl.classList.remove('hidden');
                 // Limpar resultados em caso de erro
                 [
-                    precoFinalClienteConservadorEl, precoEtiquetaConservadorEl, roasMetaConservadorEl, lucroLiquidoConservadorEl,
-                    precoFinalClienteBaseEl, precoEtiquetaBaseEl, roasMetaBaseEl, lucroLiquidoBaseEl,
-                    precoFinalClienteOtimistaEl, precoEtiquetaOtimistaEl, roasMetaOtimistaEl, lucroLiquidoOtimistaEl
+                    precoFinalClienteConservadorEl, precoEtiquetaConservadorEl, roasMetaConservadorEl, roasMinimoConservadorEl, lucroLiquidoConservadorEl,
+                    precoFinalClienteBaseEl, precoEtiquetaBaseEl, roasMetaBaseEl, roasMinimoBaseEl, lucroLiquidoBaseEl,
+                    precoFinalClienteOtimistaEl, precoEtiquetaOtimistaEl, roasMetaOtimistaEl, roasMinimoOtimistaEl, lucroLiquidoOtimistaEl
      
                 ].forEach(el => { if (el) el.textContent = 'R$ 0,00'; });
                 popularDetalhes(null, detalheDescontoConservadorEl, detalheCustoConservadorEl);
@@ -846,15 +911,19 @@
             precoFinalClienteConservadorEl.textContent = formatCurrency(cenarioConservador.precoFinalCliente);
             precoEtiquetaConservadorEl.textContent = formatCurrency(cenarioConservador.precoEtiqueta);
             roasMetaConservadorEl.textContent = formatNumber(cenarioConservador.metaRoas);
+            roasMinimoConservadorEl.textContent = formatNumber(cenarioConservador.roasMinimo);
             lucroLiquidoConservadorEl.textContent = formatCurrency(cenarioConservador.lucroLiquido);
             
             precoFinalClienteBaseEl.textContent = formatCurrency(cenarioBase.precoFinalCliente);
             precoEtiquetaBaseEl.textContent = formatCurrency(cenarioBase.precoEtiqueta);
             roasMetaBaseEl.textContent = formatNumber(cenarioBase.metaRoas);
+            roasMinimoBaseEl.textContent = formatNumber(cenarioBase.roasMinimo);
             lucroLiquidoBaseEl.textContent = formatCurrency(cenarioBase.lucroLiquido);
+            
             precoFinalClienteOtimistaEl.textContent = formatCurrency(cenarioOtimista.precoFinalCliente);
             precoEtiquetaOtimistaEl.textContent = formatCurrency(cenarioOtimista.precoEtiqueta);
             roasMetaOtimistaEl.textContent = formatNumber(cenarioOtimista.metaRoas);
+            roasMinimoOtimistaEl.textContent = formatNumber(cenarioOtimista.roasMinimo);
             lucroLiquidoOtimistaEl.textContent = formatCurrency(cenarioOtimista.lucroLiquido);
 
             popularDetalhes(cenarioConservador, detalheDescontoConservadorEl, detalheCustoConservadorEl);
@@ -866,7 +935,7 @@
             }, 50);
         }
 
-        // --- 3. FUNÇÃO PARA SALVAR RELATÓRIO (MANTIDA IDÊNTICA AO SEU CÓDIGO CORRETO) ---
+        // --- RELATÓRIO IMPRESSO ---
         function handleSave() {
             const sku = skuInput.value.trim().toUpperCase() ||
             'Relatório de Precificação';
@@ -884,41 +953,31 @@
             const metaLucro = (tipoMeta === 'percent') ? `${metaLucroVal}%` : formatCurrency(parseFloat(metaLucroInput.value) || 0);
             const percentAds = formatNumber(parseFloat(percentualAdsInput.value) || 0) + '%';
             const inputsHtml = `
-                <div class="report-section print-inputs">
-                    <h3 class="report-subtitle">Parâmetros de Entrada</h3>
-                    <div class="grid grid-cols-4 gap-4 text-sm">
-                        <div class="p-2 border-r border-gray-300">
-     
-                            <h4 class="font-bold mb-1 text-green-700">1.
-                            Dados da Venda</h4>
-                            <p><strong>SKU:</strong> ${skuInput.value.trim().toUpperCase() ||
-                            'N/A'}</p>
+                <div class="print-inputs">
+                    <h3>Parâmetros de Entrada</h3>
+                    <div class="input-grid">
+                        <div class="input-col">
+                            <h4>1. Dados da Venda</h4>
+                            <p><strong>SKU:</strong> ${skuInput.value.trim().toUpperCase() || 'N/A'}</p>
                             <p><strong>Custo Produto:</strong> ${custoProduto}</p>
                             <p><strong>Outros Custos:</strong> ${outrosCustos}</p>
                         </div>
-                
-                        <div class="p-2 border-r border-gray-300">
-                            <h4 class="font-bold mb-1 text-green-700">2.
-                            Taxas Fixas</h4>
+                        <div class="input-col">
+                            <h4>2. Taxas Fixas</h4>
                             <p><strong>Comissão:</strong> ${comissao}</p>
                             <p><strong>Taxa Fixa:</strong> ${taxaFixa}</p>
                             <p><strong>Impostos:</strong> ${impostos}</p>
-            
                         </div>
-                        <div class="p-2 border-r border-gray-300">
-                            <h4 class="font-bold mb-1 text-green-700">3.
-                            Descontos</h4>
+                        <div class="input-col">
+                            <h4>3. Descontos</h4>
                             <p><strong>Oferta Rel.:</strong> ${oferta}</p>
                             <p><strong>Cupom Loja:</strong> ${cupom}</p>
                         </div>
-                
-                        <div class="p-2">
-                            <h4 class="font-bold mb-1 text-green-700">4.
-                            Metas</h4>
+                        <div class="input-col">
+                            <h4>4. Metas</h4>
                             <p><strong>Meta Lucro Op.:</strong> ${metaLucro}</p>
                             <p><strong>% p/ Ads:</strong> ${percentAds}</p>
                         </div>
-              
                     </div>
                 </div>
             `;
@@ -934,89 +993,115 @@
                     <title>${sku}</title>
                     <script src="https://cdn.tailwindcss.com"><\/script>
                     <style>
- 
-                        body { 
-                            font-family: "Inter", sans-serif; 
-                            background-color: #ffffff;
-                
-                            color: #1e293b;
-                            padding: 20px;
-                        } 
+                        /* Enable Color Printing */
+                        body {
+                            -webkit-print-color-adjust: exact;
+                            print-color-adjust: exact;
+                            font-family: "Inter", sans-serif;
+                            background-color: #fff;
+                            color: #000;
+                            font-size: 9pt; 
+                            margin: 0;
+                            padding: 0;
+                        }
                         @page {
-       
-                            size: A4; 
-                            margin: 1cm;
+                            size: A4 portrait;
+                            margin: 5mm; 
                         }
+
+                        h1 { font-size: 14pt; margin-bottom: 5px; text-align: center; color: #047857; }
+                        .meta-info { font-size: 8pt; display: flex; justify-content: space-between; margin-bottom: 5px; border-bottom: 1px solid #ccc; padding-bottom: 2px;}
+
+                        .print-inputs {
+                            border: 1px solid #ddd;
+                            border-radius: 4px;
+                            padding: 5px;
+                            margin-bottom: 10px;
+                        }
+                        .print-inputs h3 { font-size: 10pt; margin: 0 0 5px 0; border-bottom: 1px solid #eee; }
+                        .print-inputs h4 { font-size: 9pt; margin: 0 0 2px 0; color: #047857; }
+                        .print-inputs p { font-size: 8pt; margin: 0; line-height: 1.2; }
+                        .input-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 5px; }
+                        .input-col { border-right: 1px solid #eee; padding-right: 5px; }
+                        .input-col:last-child { border-right: none; }
+
+                        .section-title { font-size: 11pt; font-weight: bold; text-align: center; margin: 5px 0; }
+
+                        .results-grid {
+                            display: grid;
+                            grid-template-columns: repeat(3, 1fr);
+                            gap: 8px;
+                        }
+
+                        /* Override Card Styles to be White with Colors */
+                        .card-scenario {
+                            border: 1px solid #ccc !important;
+                            border-radius: 4px !important;
+                            box-shadow: none !important;
+                            background: #fff !important;
+                            padding: 5px !important;
+                        }
+
+                        /* HIDE TOOLTIPS IN PRINT/PDF */
+                        .tooltip, .tooltip-icon { display: none !important; }
+
+                        /* Mapeamento de Cores para Impressão (Fundo Branco) */
                         
-                        h1 { 
-                            font-size: 20pt; 
-                            font-weight: 800; 
-                            color: #047857;
-         
-                            border-bottom: 3px solid #10b981; 
-                            padding-bottom: 5px; 
-                            margin-bottom: 20px; 
-                 
-                            text-align: center;
-                        }
-                        h2 { font-size: 16pt;
-                            margin-top: 20px; margin-bottom: 10px; color: #1e293b; font-weight: 700; }
-                        h3 { font-size: 14pt;
-                            margin-top: 15px; color: #1e293b; font-weight: 600; }
-                        h4 { font-size: 12pt;
-                            font-weight: 700; }
-                        p, span, strong { font-size: 9pt;
-                            color: #475569; }
-                        strong { color: #000;
-                            font-weight: 700; }
-                        hr { border-color: #cbd5e1;
-                            margin: 10px 0; }
-                        .card-scenario { 
-                            border: 1px solid #e2e8f0 !important;
-                            border-radius: 8px;
-                            page-break-inside: avoid;
-                            box-shadow: 0 4px 6px rgba(0,0,0,0.05);
-                            background-color: #ffffff !important;
-                        }
-                        .lg\\:grid-cols-3 { 
-                            display: grid !important;
-                            grid-template-columns: repeat(3, 1fr) !important;
-                            gap: 20px !important; 
-                        }
-                        .text-4xl { font-size: 18pt !important;
-                            font-weight: 900 !important; }
-                        .text-2xl { font-size: 14pt !important;
-                            font-weight: 700 !important; }
-                        .text-sm { font-size: 8pt !important;
-                        }
+                        /* Conservador (Red) */
+                        .text-red-400 { color: #dc2626 !important; } /* Red-600 for readability on white */
+                        .border-red-500 { border-color: #dc2626 !important; border-top-width: 3px !important; }
                         
-                        .report-section { border-bottom: 1px solid #cbd5e1;
-                            padding-bottom: 15px; margin-bottom: 15px; }
-                        .report-title { color: #0f172a;
-                            font-size: 18pt; font-weight: 800; }
+                        /* Base (Green) */
+                        .text-green-400 { color: #16a34a !important; } /* Green-600 */
+                        .border-green-400 { border-color: #16a34a !important; border-top-width: 3px !important; }
+                        
+                        /* Otimista (Blue) */
+                        .text-blue-400 { color: #2563eb !important; } /* Blue-600 */
+                        .border-blue-400 { border-color: #2563eb !important; border-top-width: 3px !important; }
+                        
+                        /* Orange/Warning */
+                        .text-orange-400 { color: #d97706 !important; } /* Amber-600 */
+                        .border-orange-500\\/30 { border-color: #d97706 !important; }
+
+                        /* General Text Fixes for White Background */
+                        .text-slate-400 { color: #64748b !important; }
+                        .text-slate-300 { color: #475569 !important; }
+                        .text-slate-200 { color: #1e293b !important; } /* Titles become dark slate */
+                        .text-slate-100 { color: #000000 !important; } /* Main numbers become black */
+                        
+                        /* Restore Typography Sizes */
+                        .card-scenario h4 { font-size: 10pt !important; margin-bottom: 2px !important; }
+                        .card-scenario p { font-size: 8pt !important; margin: 1px 0 !important; }
+                        .card-scenario .text-4xl { font-size: 14pt !important; line-height: 1.1 !important; }
+                        .card-scenario .text-2xl { font-size: 12pt !important; }
+                        .card-scenario .text-xl { font-size: 10pt !important; }
+                        .card-scenario .text-xs { font-size: 7pt !important; }
+
+                        .card-scenario hr { margin: 3px 0 !important; border-top: 1px dotted #ccc !important; }
+                        .mb-4, .my-4, .mt-6, .mb-3 { margin-bottom: 2px !important; margin-top: 2px !important; }
+                        .space-y-2 > * + * { margin-top: 1px !important; }
+                        
+                        .bg-slate-900\\/50 { background: transparent !important; border: 1px solid #ddd !important; padding: 2px !important; }
+
                     </style>
                 </head>
                 <body>
-                
-                <h1 class="report-title">Relatório Estratégico de Precificação</h1>
+                    <h1>Relatório Estratégico de Precificação</h1>
+                    <div class="meta-info">
+                        <strong>SKU: ${sku || 'N/A'}</strong>
+                        <span>${dataAtual}</span>
+                    </div>
 
-        
-                        <div class="flex justify-between text-sm mb-4">
-                     <p><strong>SKU:</strong> ${sku ||
-                            'Não Informado'}</p>
-                     <p><strong>Data de Emissão:</strong> ${dataAtual}</p>
-                </div>
-                ${inputsHtml}
-                <div class="report-section">
-                    <h2 class="text-xl font-bold text-center">Análise de Cenários 
-                        de Lucro</h2>
-                </div>
-                <div class="grid lg:grid-cols-3 gap-6">
-                    ${resultsHtml}
-                </div>
+                    ${inputsHtml} 
 
-                </body></html>
-            
+                    <div class="section-title">Análise de Cenários</div>
+                    <div class="results-grid">
+                        ${resultsHtml}
+                    </div>
+                    
+                    <div style="font-size: 7pt; text-align: center; margin-top: 5px; color: #888;">Documento gerado automaticamente.</div>
+                </body>
+                </html>
             `);
             printWindow.document.close();
             
@@ -1026,17 +1111,23 @@
                 printWindow.close(); 
             }, 1000);
         }
-        // --- 4. LÓGICA DE FIREBASE E SINCRONIZAÇÃO DE DADOS ---
 
+        // --- FIREBASE: DADOS ---
         function getActiveCosts() {
-            return user ?
-            cloudSkus : localData;
+            // Prioriza nuvem se logado, senão local
+            return user ? cloudSkus : localData;
         }
 
         async function saveCostsToDB(newCosts) {
             if (user) {
-                const userRef = doc(db, "users", user.uid);
-                await setDoc(userRef, { savedCosts: newCosts }, { merge: true });
+                try {
+                    // Salvar no caminho de usuários (padrão Firebase)
+                    const userRef = doc(db, "users", user.uid);
+                    await setDoc(userRef, { savedCosts: newCosts }, { merge: true });
+                } catch(e) {
+                    console.error("Erro ao salvar no Firestore:", e);
+                    showToast("Erro ao salvar na nuvem.", "error");
+                }
             } else {
                 localStorage.setItem('savedCostsDB_v4', JSON.stringify(newCosts));
                 localData = newCosts;
@@ -1048,7 +1139,7 @@
             const filter = searchSkuInput.value.toUpperCase();
             savedCostsListEl.innerHTML = '';
             
-            if (currentCosts.length === 0) {
+            if (!currentCosts || currentCosts.length === 0) {
                 savedCostsListEl.innerHTML = '<p class="text-slate-400 text-sm">Nenhum custo salvo ainda.</p>';
                 return;
             }
@@ -1098,7 +1189,11 @@
                 if (confirm(`Tem certeza que deseja excluir o SKU "${sku}"?`)) {
                     let currentCosts = getActiveCosts();
                     currentCosts = currentCosts.filter(i => i.sku !== sku);
-                    saveCostsToDB(currentCosts); // Salva de volta ao DB/Local
+                    saveCostsToDB(currentCosts); 
+                    // Atualiza localmente para refletir imediatamente na UI se estiver na nuvem
+                    if (user) cloudSkus = currentCosts;
+                    else localData = currentCosts;
+                    
                     renderSavedCosts();
                     showToast(`SKU "${sku}" excluído.`, "info");
                 }
@@ -1111,19 +1206,22 @@
                     const sku = skuInput.value.trim().toUpperCase();
          
                     if (!sku) {
-                        alert("Por favor, preencha o campo SKU do Produto.");
+                        showToast("Por favor, preencha o campo SKU do Produto.", "error");
                         return;
                     }
  
               
                     const custoProduto = parseFloat(custoProdutoInput.value) || 0;
                     const outrosCustos = parseFloat(outrosCustosInput.value) || 0;
-                    const currentCosts = getActiveCosts();
+                    let currentCosts = getActiveCosts() || []; // Garante array
 
               
                     const newCost = { sku, custoProduto, outrosCustos };
                     const updatedCosts = currentCosts.filter(item => item.sku !== sku);
                     updatedCosts.push(newCost);
+                    
+                    if(user) cloudSkus = updatedCosts;
+                    else localData = updatedCosts;
 
                     await saveCostsToDB(updatedCosts);
                     
@@ -1143,7 +1241,7 @@
             if (exportCostsBtn) {
                 exportCostsBtn.addEventListener('click', () => {
                     const costsToExport = getActiveCosts();
-                    if (costsToExport.length === 0) {
+                    if (!costsToExport || costsToExport.length === 0) {
        
                         showToast("Não há dados para exportar.", "info");
                         return;
@@ -1176,7 +1274,10 @@
                             if (Array.isArray(importedData) && importedData.every(i => i.sku && i.custoProduto !== undefined && i.outrosCustos !== undefined)) {
                                 const destination = user ? "na Nuvem" : "localmente";
              
-                                if (confirm(`Isso irá substituir ${getActiveCosts().length} SKUs existentes por ${importedData.length} SKUs do ficheiro ${destination}. Deseja continuar?`)) {
+                                if (confirm(`Isso irá substituir os dados existentes por ${importedData.length} SKUs do arquivo ${destination}. Deseja continuar?`)) {
+                                    if(user) cloudSkus = importedData;
+                                    else localData = importedData;
+                                    
                                     await saveCostsToDB(importedData);
                              
                                     renderSavedCosts();
@@ -1194,9 +1295,8 @@
                 });
             }
         }
-        
-        // --- 5. LÓGICA DE AUTENTICAÇÃO E INSCRIÇÃO ---
 
+        // --- AUTH & SETUP ---
         if (isFirebaseReady) {
             loginBtn.onclick = async () => {
                 const provider = new GoogleAuthProvider();
@@ -1213,77 +1313,74 @@
                 updateAuthUI();
                 renderSavedCosts();
             };
-            function updateAuthUI() {
-                if (user) {
-                    loginBtn.classList.add('hidden');
-                    userInfoDiv.classList.remove('hidden');
-                    userNameEl.textContent = user.displayName.split(' ')[0];
-                    userPhotoEl.src = user.photoURL || 'data:image/svg+xml,...';
-                } else {
-                    loginBtn.classList.remove('hidden');
-                    userInfoDiv.classList.add('hidden');
-                }
-            }
-
-            function subscribeToUserData() {
-                if (!user) return;
-                const userRef = doc(db, "users", user.uid);
-                // Escuta em tempo real (onSnapshot)
-                onSnapshot(userRef, (docSnap) => {
-                    if (docSnap.exists() && docSnap.data().savedCosts) {
-                        cloudSkus = docSnap.data().savedCosts;
-                    
-                        // Se o localData tiver itens e a nuvem estiver vazia, transfere
-                        if (cloudSkus.length === 0 && localData.length > 0) {
-                            cloudSkus = [...localData];
-                        
-                            saveCostsToDB(cloudSkus); // Sobe os dados locais para a nuvem
-                            localData = []; // Limpa o local após a subida
-                            showToast("Dados locais transferidos para a nuvem.", "success");
-                
-                        }
-                    } else {
-                        cloudSkus = localData; // Se não houver dados, usa o local
-                    }
-                
-                    renderSavedCosts();
-                }, (error) => {
-                    console.error("Erro ao sincronizar Firestore:", error);
-                    showToast("Erro ao sincronizar dados da nuvem.", "error");
-                });
-            }
 
             onAuthStateChanged(auth, (currentUser) => {
                 user = currentUser;
                 updateAuthUI();
                 if (user) {
                     subscribeToUserData();
-     
                     document.getElementById('save-info-text').textContent = `Status: Logado como ${user.displayName.split(' ')[0]}. Dados na Nuvem.`;
                     showToast("Login com sucesso. Dados sincronizados.", "success");
                 } else {
                     renderSavedCosts();
-             
                     document.getElementById('save-info-text').textContent = "Status: Offline / Usando armazenamento local.";
                 }
             });
         }
-        
-        // --- 6. INICIALIZAÇÃO ---
-        function setupTabs() {
-            tabCalc.addEventListener('click', () => {
-                tabCalc.classList.add('active');
-                tabCosts.classList.remove('active');
-                contentCalcMain.classList.remove('hidden');
-       
-                contentCosts.classList.add('hidden');
-            });
-            tabCosts.addEventListener('click', () => {
-                tabCosts.classList.add('active');
-                tabCalc.classList.remove('active');
-                contentCosts.classList.remove('hidden');
-                contentCalcMain.classList.add('hidden');
-                renderSavedCosts();
+
+        function updateAuthUI() {
+            if (user) {
+                loginBtn.classList.add('hidden');
+                userInfoDiv.classList.remove('hidden');
+                userNameEl.textContent = user.displayName.split(' ')[0];
+                if (user.photoURL) {
+                    userPhotoEl.src = user.photoURL;
+                    userPhotoEl.classList.remove('hidden');
+                    userIconFallback.classList.add('hidden');
+                } else {
+                    userPhotoEl.classList.add('hidden');
+                    userIconFallback.classList.remove('hidden');
+                }
+            } else {
+                loginBtn.classList.remove('hidden');
+                userInfoDiv.classList.add('hidden');
+            }
+        }
+
+        function subscribeToUserData() {
+            if (!user) return;
+            // Usar coleção 'users' padrão para Firebase Auth real
+            const userRef = doc(db, "users", user.uid);
+            
+            onSnapshot(userRef, (docSnap) => {
+                if (docSnap.exists() && docSnap.data().savedCosts) {
+                    cloudSkus = docSnap.data().savedCosts;
+                    
+                    // Sincronização inteligente: Se local tem dados e nuvem está vazia, sobe local
+                    if (cloudSkus.length === 0 && localData.length > 0) {
+                        cloudSkus = [...localData];
+                        saveCostsToDB(cloudSkus);
+                        localData = []; 
+                        localStorage.removeItem('savedCostsDB_v4');
+                        showToast("Dados locais sincronizados com a nuvem.", "success");
+                    }
+                } else {
+                    // Se não existe doc na nuvem, cria com dados locais se existirem
+                    if (localData.length > 0) {
+                         cloudSkus = [...localData];
+                         saveCostsToDB(cloudSkus);
+                         localData = [];
+                         localStorage.removeItem('savedCostsDB_v4');
+                    } else {
+                        cloudSkus = [];
+                    }
+                }
+                
+                if(contentCosts && !contentCosts.classList.contains('hidden')) {
+                    renderSavedCosts();
+                }
+            }, (error) => {
+                console.error("Erro ao sincronizar Firestore:", error);
             });
         }
 
@@ -1318,6 +1415,24 @@
             setupCostSaving();
             calcularTudo();
         });
+
+        // Setup Tabs Logic
+        function setupTabs() {
+            tabCalc.addEventListener('click', () => {
+                tabCalc.classList.add('active');
+                tabCosts.classList.remove('active');
+                contentCalcMain.classList.remove('hidden');
+       
+                contentCosts.classList.add('hidden');
+            });
+            tabCosts.addEventListener('click', () => {
+                tabCosts.classList.add('active');
+                tabCalc.classList.remove('active');
+                contentCosts.classList.remove('hidden');
+                contentCalcMain.classList.add('hidden');
+                renderSavedCosts();
+            });
+        }
     </script>
 </body>
 </html>
